@@ -1,1 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaCode - Executors para Roblox</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
 
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">◆</span>
+                <span class="logo-text">NovaCode</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="scripts.html">Scripts</a></li>
+                <li><a href="executors.html" class="active">Executors</a></li>
+                <li><a href="tools.html">Herramientas</a></li>
+                <li><a href="#" class="discord-link">Discord</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero-small">
+            <div class="container">
+                <h1>Executors para Roblox</h1>
+                <p>Los mejores ejecutores organizados para ti</p>
+            </div>
+        </section>
+
+        <section class="search-section">
+            <div class="container">
+                <div class="search-container">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Buscar executors...">
+                    <button class="search-btn">🔍</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="cards-section">
+            <div class="container">
+                <div class="cards-grid" id="cardsGrid"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <span class="logo-icon">◆</span>
+                        <span>NovaCode</span>
+                    </div>
+                    <p>Portal comunitario enfocado en organizar scripts, executors y herramientas para Roblox.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Categorías</h4>
+                    <ul>
+                        <li><a href="scripts.html">Scripts</a></li>
+                        <li><a href="executors.html">Executors</a></li>
+                        <li><a href="tools.html">Herramientas</a></li>
+                        <li><a href="#">Otros</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Enlaces</h4>
+                    <ul>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                        <li><a href="#">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 NovaCode. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        fetch('../data/executors.json')
+            .then(res => res.json())
+            .then(data => {
+                const grid = document.getElementById('cardsGrid');
+                grid.innerHTML = data.map(item => `
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="${item.image}" alt="${item.title}" onerror="this.src='https://via.placeholder.com/300x160?text=No+Image'">
+                            ${item.verified ? '<span class="verified-badge">✓ Verificado</span>' : ''}
+                        </div>
+                        <div class="card-content">
+                            <span class="card-category ${item.category.toLowerCase()}">${item.category}</span>
+                            <h3 class="card-title">${item.title}</h3>
+                            <p class="card-description">${item.description}</p>
+                            <div class="card-footer">
+                                <span class="card-downloads">⬇️ ${item.downloads}</span>
+                                <a href="${item.link}" class="card-btn">Abrir</a>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            });
+        
+        const themeToggle = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        document.body.setAttribute('data-theme', currentTheme);
+        themeToggle.textContent = currentTheme === 'dark' ? '🌙' : '☀️';
+        themeToggle.addEventListener('click', () => {
+            const newTheme = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            document.body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeToggle.textContent = newTheme === 'dark' ? '🌙' : '☀️';
+        });
+    </script>
+</body>
+</html>
