@@ -1,1 +1,68 @@
-
+[
+    {
+        "id": "e001",
+        "title": "Krnl Executor",
+        "category": "Executor",
+        "description": "Executor confiable con soporte para la mayoría de scripts",
+        "image": "https://via.placeholder.com/300x160/0B1C31/8B5CF6?text=Krnl",
+        "downloads": "34500",
+        "verified": true,
+        "link": "#",
+        "date": "2026-01-15"
+    },
+    {
+        "id": "e002",
+        "title": "Synapse X",
+        "category": "Executor",
+        "description": "El executor más potente y estable del mercado",
+        "image": "https://via.placeholder.com/300x160/0B1C31/8B5CF6?text=Synapse+X",
+        "downloads": "89200",
+        "verified": true,
+        "link": "#",
+        "date": "2026-01-14"
+    },
+    {
+        "id": "e003",
+        "title": "ScriptWare",
+        "category": "Executor",
+        "description": "Executor ligero y fácil de usar",
+        "image": "https://via.placeholder.com/300x160/0B1C31/8B5CF6?text=ScriptWare",
+        "downloads": "12300",
+        "verified": true,
+        "link": "#",
+        "date": "2026-01-13"
+    },
+    {
+        "id": "e004",
+        "title": "Oxygen U",
+        "category": "Executor",
+        "description": "Executor moderno con interfaz intuitiva",
+        "image": "https://via.placeholder.com/300x160/0B1C31/8B5CF6?text=Oxygen+U",
+        "downloads": "6700",
+        "verified": false,
+        "link": "#",
+        "date": "2026-01-12"
+    },
+    {
+        "id": "e005",
+        "title": "Fluxus",
+        "category": "Executor",
+        "description": "Executor gratuito con buen rendimiento",
+        "image": "https://via.placeholder.com/300x160/0B1C31/8B5CF6?text=Fluxus",
+        "downloads": "45600",
+        "verified": true,
+        "link": "#",
+        "date": "2026-01-11"
+    },
+    {
+        "id": "e006",
+        "title": "Electron",
+        "category": "Executor",
+        "description": "Executor con soporte para múltiples plataformas",
+        "image": "https://via.placeholder.com/300x160/0B1C31/8B5CF6?text=Electron",
+        "downloads": "8900",
+        "verified": false,
+        "link": "#",
+        "date": "2026-01-10"
+    }
+]
