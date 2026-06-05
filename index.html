@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaCode Portal - Scripts, Executors y Herramientas para Roblox</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">◆</span>
+                <span class="logo-text">NovaCode</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Inicio</a></li>
+                <li><a href="scripts.html">Scripts</a></li>
+                <li><a href="executors.html">Executors</a></li>
+                <li><a href="tools.html">Herramientas</a></li>
+                <li><a href="#" class="discord-link">Discord</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-container">
+                <div class="hero-badge">✦ NovaCode Portal activo</div>
+                <h1 class="hero-title">
+                    Descargar scripts,<br>
+                    executors y herramientas<br>
+                    para Roblox<br>
+                    <span class="hero-highlight">en un solo lugar</span>
+                </h1>
+                <p class="hero-description">
+                    Portal organizado para encontrar contenido rápidamente.
+                </p>
+            </div>
+        </section>
+
+        <!-- Search Section -->
+        <section class="search-section">
+            <div class="container">
+                <div class="search-container">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Buscar scripts, executors o herramientas...">
+                    <button class="search-btn">🔍</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="categories-section">
+            <div class="container">
+                <div class="categories-filter">
+                    <button class="category-btn active" data-category="all">Todos</button>
+                    <button class="category-btn" data-category="Script">Scripts</button>
+                    <button class="category-btn" data-category="Executor">Executors</button>
+                    <button class="category-btn" data-category="Herramienta">Herramientas</button>
+                    <button class="category-btn" data-category="Otros">Otros</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cards Grid -->
+        <section class="cards-section">
+            <div class="container">
+                <div class="cards-grid" id="cardsGrid">
+                    <!-- Cards will be generated here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Widgets Section -->
+        <section class="widgets-section">
+            <div class="container">
+                <div class="widgets-grid">
+                    <!-- Stats Widget -->
+                    <div class="widget">
+                        <h3 class="widget-title">📊 Estadísticas</h3>
+                        <div class="stats-content">
+                            <div class="stat-item">
+                                <span class="stat-label">Scripts:</span>
+                                <span class="stat-value" id="totalScripts">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Executors:</span>
+                                <span class="stat-value" id="totalExecutors">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Herramientas:</span>
+                                <span class="stat-value" id="totalTools">0</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Descargas:</span>
+                                <span class="stat-value" id="totalDownloads">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Discord Widget -->
+                    <div class="widget">
+                        <h3 class="widget-title">💬 Comunidad</h3>
+                        <div class="discord-content">
+                            <p>Únete a la comunidad para estar pendiente de novedades y actualizaciones.</p>
+                            <button class="discord-btn">🎮 Unirse al Discord</button>
+                        </div>
+                    </div>
+
+                    <!-- Novedades Widget -->
+                    <div class="widget">
+                        <h3 class="widget-title">🆕 Novedades</h3>
+                        <div class="news-content" id="recentItems">
+                            <!-- Recent items will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Top Popular Widget -->
+                    <div class="widget">
+                        <h3 class="widget-title">🔥 Top Populares</h3>
+                        <div class="top-content" id="topItems">
+                            <!-- Top items will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <span class="logo-icon">◆</span>
+                        <span>NovaCode</span>
+                    </div>
+                    <p>Portal comunitario enfocado en organizar scripts, executors y herramientas para Roblox.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Categorías</h4>
+                    <ul>
+                        <li><a href="scripts.html">Scripts</a></li>
+                        <li><a href="executors.html">Executors</a></li>
+                        <li><a href="tools.html">Herramientas</a></li>
+                        <li><a href="#">Otros</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Enlaces</h4>
+                    <ul>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">Disclaimer</a></li>
+                        <li><a href="#">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 NovaCode. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
