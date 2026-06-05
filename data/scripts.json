@@ -1,1 +1,101 @@
-
+[
+    {
+        "id": "001",
+        "title": "Steal A Brainrot",
+        "category": "Script",
+        "description": "Jump + Speed Booster avanzado con efectos visuales",
+        "image": "https://via.placeholder.com/300x160/0B1C31/29A8FF?text=Brainrot+Script",
+        "downloads": "12400",
+        "verified": true,
+        "link": "#",
+        "date": "2026-01-15"
+    },
+    {
+        "id": "002",
+        "title": "Auto Farm Pro",
+        "category": "Script",
+        "description": "Sistema automático de farming para múltiples juegos",
+        "image": "https://via.placeholder.com/300x160/0B1C31/29A8FF?text=Auto+Farm",
+        "downloads": "8900",
+        "verified": true,
+        "link": "#",
+        "date": "2026-01-14"
+    },
+    {
+        "id": "003",
+        "title": "Aimbot Ultimate",
+        "category": "Script",
+        "description": "Precisión perfecta para juegos de disparos",
+        "image": "https://via.placeholder.com/300x160/0B1C31/29A8FF?text=Aimbot",
+        "downloads": "15600",
+        "verified": true,
+        "link": "#",
+        "date": "2026-01-13"
+    },
+    {
+        "id": "004",
+        "title": "ESP Visualizer",
+        "category": "Script",
+        "description": "Visualiza jugadores y objetos a través de paredes",
+        "image": "https://via.placeholder.com/300x160/0B1C31/29A8FF?text=ESP",
+        "downloads": "7200",
+        "verified": false,
+        "link": "#",
+        "date": "2026-01-12"
+    },
+    {
+        "id": "005",
+        "title": "Fly + Noclip",
+        "category": "Script",
+        "description": "Vuela libremente y atraviesa paredes",
+        "image": "https://via.placeholder.com/300x160/0B1C31/29A8FF?text=Fly",
+        "downloads": "23400",
+        "verified": true,
+        "link": "#",
+        "date": "2026-01-11"
+    },
+    {
+        "id": "006",
+        "title": "Teleport Hub",
+        "category": "Script",
+        "description": "Teletransportación instantánea a cualquier coordenada",
+        "image": "https://via.placeholder.com/300x160/0B1C31/29A8FF?text=Teleport",
+        "downloads": "5600",
+        "verified": false,
+        "link": "#",
+        "date": "2026-01-10"
+    },
+    {
+        "id": "007",
+        "title": "Infinite Yield",
+        "category": "Script",
+        "description": "Comandos administrativos completos",
+        "image": "https://via.placeholder.com/300x160/0B1C31/29A8FF?text=Infinite+Yield",
+        "downloads": "45200",
+        "verified": true,
+        "link": "#",
+        "date": "2026-01-09"
+    },
+    {
+        "id": "008",
+        "title": "GUI Creator Suite",
+        "category": "Herramienta",
+        "description": "Crea interfaces gráficas fácilmente",
+        "image": "https://via.placeholder.com/300x160/0B1C31/29A8FF?text=GUI+Creator",
+        "downloads": "3400",
+        "verified": true,
+        "link": "#",
+        "date": "2026-01-08"
+    },
+    {
+        "id": "009",
+        "title": "Admin Commands",
+        "category": "Script",
+        "description": "Sistema completo de comandos de administración",
+        "image": "https://via.placeholder.com/300x160/0B1C31/29A8FF?text=Admin",
+        "downloads": "18700",
+        "verified": true,
+        "link": "#",
+        "date": "2026-01-07"
+    }
+]
