@@ -1,172 +1,857 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NovaCode Portal - Scripts, Executors y Herramientas para Roblox</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>NovaX Portal Pro | Scripts, Executors & Herramientas Roblox</title>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <!-- AOS Library -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #03050b;
+      --bg-secondary: #0b1122ee;
+      --bg-card: rgba(11, 17, 34, 0.92);
+      --bg-navbar: rgba(6, 12, 24, 0.8);
+      --text-primary: #edf2ff;
+      --text-secondary: #b9ceff;
+      --border-color: #1e3a6b;
+      --border-glow: #3b82f6;
+      --shadow-color: rgba(59,130,246,0.3);
+      --tag-bg: #1e2a47;
+      --badge-updated: #1e4620;
+      --badge-sinkey: #854d0e;
+      --badge-exploit: #9f1239;
+      --footer-bg: rgba(5,15,30,0.6);
+      --transition-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --transition-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    body.light {
+      --bg-primary: #f0f4f8;
+      --bg-secondary: #ffffffdd;
+      --bg-card: rgba(255, 255, 255, 0.95);
+      --bg-navbar: #ffffffcc;
+      --text-primary: #1a2c3e;
+      --text-secondary: #2c3e66;
+      --border-color: #cbd5e1;
+      --border-glow: #2563eb;
+      --shadow-color: rgba(37,99,235,0.2);
+      --tag-bg: #e2e8f0;
+      --badge-updated: #166534;
+      --badge-sinkey: #9a3412;
+      --badge-exploit: #9f1239;
+      --footer-bg: #e2e8f0cc;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background 0.4s var(--transition-smooth), color 0.3s ease;
+    }
+
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1rem 2rem 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      animation: fadeInUp 0.5s ease;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: var(--bg-navbar);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border-glow);
+      border-radius: 40px;
+      padding: 0.6rem 1.2rem;
+      color: var(--text-primary);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s var(--transition-smooth);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px var(--shadow-color);
+    }
+
+    .discord-btn { background: #5865f2; border-color: #5865f2; color: white; }
+    .discord-btn:hover { background: #4752c4; }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      padding: 0.8rem 2rem;
+      background: var(--bg-navbar);
+      backdrop-filter: blur(12px);
+      border-radius: 2.5rem;
+      border: 1px solid var(--border-glow);
+      animation: fadeInUp 0.6s 0.1s backwards;
+    }
+
+    .logo-icon {
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, #0f2b4f, #030a15);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 0 15px rgba(0, 160, 255, 0.5);
+    }
+
+    .logo-text h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.9rem;
+      background: linear-gradient(135deg, #a5f0ff, #2b7fff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .search-box {
+      background: var(--bg-secondary);
+      backdrop-filter: blur(8px);
+      border-radius: 60px;
+      padding: 0.7rem 1.8rem;
+      display: flex;
+      gap: 12px;
+      border: 1px solid var(--border-glow);
+      width: 340px;
+    }
+
+    .search-box input {
+      background: transparent;
+      border: none;
+      width: 100%;
+      color: var(--text-primary);
+      outline: none;
+    }
+
+    .categories {
+      display: flex;
+      gap: 1.2rem;
+      margin: 2rem 0 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .cat {
+      background: var(--bg-secondary);
+      backdrop-filter: blur(12px);
+      padding: 0.8rem 1.8rem;
+      border-radius: 2rem;
+      text-align: center;
+      flex: 1;
+      border: 1px solid var(--border-color);
+      transition: all 0.3s var(--transition-bounce);
+      cursor: pointer;
+    }
+
+    .cat:hover {
+      transform: translateY(-5px);
+      border-color: var(--border-glow);
+      box-shadow: 0 10px 25px var(--shadow-color);
+    }
+
+    .cat i { font-size: 1.8rem; color: var(--border-glow); }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .card {
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      border-radius: 1.8rem;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      transition: all 0.4s var(--transition-bounce);
+      cursor: pointer;
+      animation: fadeInUp 0.6s forwards;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: var(--border-glow);
+      box-shadow: 0 20px 35px -12px var(--shadow-color);
+    }
+
+    .preview-img {
+      width: 100%;
+      height: 180px;
+      background: linear-gradient(135deg, #07142a, #01050e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .preview-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .card:hover .preview-img img {
+      transform: scale(1.05);
+    }
+
+    .card-content {
+      padding: 1.3rem;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-status {
+      border-radius: 40px;
+      font-size: 0.7rem;
+      padding: 0.25rem 0.9rem;
+      font-weight: 600;
+    }
+
+    .badge-updated { background: var(--badge-updated); color: #86efac; }
+    .badge-sinkey { background: var(--badge-sinkey); color: #fde047; }
+    .badge-exploit { background: var(--badge-exploit); color: #f9a8d4; }
+
+    .desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin: 10px 0;
+      line-height: 1.5;
+    }
+
+    .tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 10px 0;
+    }
+
+    .tag {
+      background: var(--tag-bg);
+      padding: 0.2rem 0.7rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border-color);
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* MODAL */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(15px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: var(--bg-card);
+      border-radius: 2rem;
+      max-width: 550px;
+      width: 90%;
+      border: 2px solid var(--border-glow);
+      box-shadow: 0 30px 50px rgba(0,0,0,0.5);
+      animation: scaleIn 0.3s var(--transition-bounce);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-card);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+      max-height: 70vh;
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+
+    .modal-body::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .modal-body::-webkit-scrollbar-track {
+      background: var(--border-color);
+      border-radius: 10px;
+    }
+
+    .modal-body::-webkit-scrollbar-thumb {
+      background: var(--border-glow);
+      border-radius: 10px;
+    }
+
+    .modal-preview {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .modal-details {
+      margin: 1rem 0;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border-radius: 1rem;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+
+    .download-btn {
+      background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 40px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s;
+      width: 100%;
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+
+    .download-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 10px 25px rgba(59,130,246,0.4);
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      font-size: 2rem;
+      color: var(--text-primary);
+      cursor: pointer;
+      line-height: 1;
+      transition: transform 0.2s;
+    }
+
+    .close-modal:hover {
+      transform: scale(1.1);
+    }
+
+    /* FOOTER PROFESIONAL CON LOGO IZQUIERDA */
+    footer {
+      margin-top: 3rem;
+      padding: 1.5rem 2rem;
+      background: var(--footer-bg);
+      backdrop-filter: blur(8px);
+      border-radius: 1.5rem;
+      border-top: 1px solid var(--border-glow);
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .footer-logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #0f2b4f, #030a15);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: 0 0 10px rgba(59,130,246,0.3);
+    }
+
+    .footer-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .footer-copyright {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .footer-creator {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      opacity: 0.8;
+    }
+
+    .footer-creator i {
+      color: var(--border-glow);
+      margin: 0 2px;
+    }
+
+    .footer-right {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .social-icon {
+      width: 35px;
+      height: 35px;
+      background: var(--bg-secondary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      cursor: pointer;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .social-icon:hover {
+      transform: translateY(-3px);
+      background: var(--border-glow);
+      color: white;
+    }
+
+    .footer-version {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      background: var(--tag-bg);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+    }
+
+    @media (max-width: 720px) {
+      .container { padding: 1rem; }
+      .navbar { flex-direction: column; }
+      .search-box { width: 100%; }
+      .modal-content { width: 95%; }
+      .footer-content { flex-direction: column; text-align: center; }
+      .footer-left { flex-direction: column; text-align: center; }
+      .footer-right { justify-content: center; }
+    }
+  </style>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </head>
 <body>
+<div id="particles-js"></div>
+<div class="container">
+  <div class="topbar">
+    <div class="nav-buttons">
+      <button class="nav-btn" id="homeBtn"><i class="fas fa-home"></i> Inicio</button>
+      <button class="nav-btn discord-btn" id="discordBtn"><i class="fab fa-discord"></i> Discord</button>
+      <button class="nav-btn" id="themeToggle"><i class="fas fa-moon" id="themeIcon"></i> <span id="themeText">Dark</span></button>
+    </div>
+    <div><i class="fas fa-chart-line"></i> Contadores en tiempo real</div>
+  </div>
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <span class="logo-icon">◆</span>
-                <span class="logo-text">NovaCode</span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.html" class="active">Inicio</a></li>
-                <li><a href="scripts.html">Scripts</a></li>
-                <li><a href="executors.html">Executors</a></li>
-                <li><a href="tools.html">Herramientas</a></li>
-                <li><a href="#" class="discord-link">Discord</a></li>
-            </ul>
-            <button class="theme-toggle" id="themeToggle">🌙</button>
+  <div class="navbar">
+    <div class="logo-area" style="display: flex; align-items: center; gap: 15px;">
+      <div class="logo-icon"><i class="fas fa-cube"></i></div>
+      <div class="logo-text"><h1>⚡ NovaX Portal Pro</h1><span>Scripts • Executors • Tools</span></div>
+    </div>
+    <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Buscar script, executor o herramienta..."></div>
+  </div>
+  
+  <div class="categories">
+    <div class="cat" data-filter="script"><i class="fas fa-code"></i><h3>Scripts</h3><small>Actualizados</small></div>
+    <div class="cat" data-filter="executor"><i class="fas fa-bolt"></i><h3>Executors</h3><small>Rápidos</small></div>
+    <div class="cat" data-filter="herramienta"><i class="fas fa-tools"></i><h3>Herramientas</h3><small>Para experiencias</small></div>
+  </div>
+  
+  <h2><i class="fas fa-fire"></i> Publicaciones destacadas <span style="font-size:0.8rem;">(Visualizaciones + Descargas en tiempo real)</span></h2>
+  <div id="cardsContainer" class="cards-grid"></div>
+
+  <!-- FOOTER PROFESIONAL CON LOGO Y CRÉDITOS -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-left">
+        <div class="footer-logo">
+          <i class="fas fa-cube"></i>
         </div>
-    </nav>
-
-    <main>
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-container">
-                <div class="hero-badge">✦ NovaCode Portal activo</div>
-                <h1 class="hero-title">
-                    Descargar scripts,<br>
-                    executors y herramientas<br>
-                    para Roblox<br>
-                    <span class="hero-highlight">en un solo lugar</span>
-                </h1>
-                <p class="hero-description">
-                    Portal organizado para encontrar contenido rápidamente.
-                </p>
-            </div>
-        </section>
-
-        <!-- Search Section -->
-        <section class="search-section">
-            <div class="container">
-                <div class="search-container">
-                    <input type="text" id="searchInput" class="search-input" placeholder="Buscar scripts, executors o herramientas...">
-                    <button class="search-btn">🔍</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Categories Section -->
-        <section class="categories-section">
-            <div class="container">
-                <div class="categories-filter">
-                    <button class="category-btn active" data-category="all">Todos</button>
-                    <button class="category-btn" data-category="Script">Scripts</button>
-                    <button class="category-btn" data-category="Executor">Executors</button>
-                    <button class="category-btn" data-category="Herramienta">Herramientas</button>
-                    <button class="category-btn" data-category="Otros">Otros</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Cards Grid -->
-        <section class="cards-section">
-            <div class="container">
-                <div class="cards-grid" id="cardsGrid">
-                    <!-- Cards will be generated here -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Widgets Section -->
-        <section class="widgets-section">
-            <div class="container">
-                <div class="widgets-grid">
-                    <!-- Stats Widget -->
-                    <div class="widget">
-                        <h3 class="widget-title">📊 Estadísticas</h3>
-                        <div class="stats-content">
-                            <div class="stat-item">
-                                <span class="stat-label">Scripts:</span>
-                                <span class="stat-value" id="totalScripts">0</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">Executors:</span>
-                                <span class="stat-value" id="totalExecutors">0</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">Herramientas:</span>
-                                <span class="stat-value" id="totalTools">0</span>
-                            </div>
-                            <div class="stat-item">
-                                <span class="stat-label">Descargas:</span>
-                                <span class="stat-value" id="totalDownloads">0</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Discord Widget -->
-                    <div class="widget">
-                        <h3 class="widget-title">💬 Comunidad</h3>
-                        <div class="discord-content">
-                            <p>Únete a la comunidad para estar pendiente de novedades y actualizaciones.</p>
-                            <button class="discord-btn">🎮 Unirse al Discord</button>
-                        </div>
-                    </div>
-
-                    <!-- Novedades Widget -->
-                    <div class="widget">
-                        <h3 class="widget-title">🆕 Novedades</h3>
-                        <div class="news-content" id="recentItems">
-                            <!-- Recent items will be loaded here -->
-                        </div>
-                    </div>
-
-                    <!-- Top Popular Widget -->
-                    <div class="widget">
-                        <h3 class="widget-title">🔥 Top Populares</h3>
-                        <div class="top-content" id="topItems">
-                            <!-- Top items will be loaded here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-grid">
-                <div class="footer-section">
-                    <div class="footer-logo">
-                        <span class="logo-icon">◆</span>
-                        <span>NovaCode</span>
-                    </div>
-                    <p>Portal comunitario enfocado en organizar scripts, executors y herramientas para Roblox.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Categorías</h4>
-                    <ul>
-                        <li><a href="scripts.html">Scripts</a></li>
-                        <li><a href="executors.html">Executors</a></li>
-                        <li><a href="tools.html">Herramientas</a></li>
-                        <li><a href="#">Otros</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Enlaces</h4>
-                    <ul>
-                        <li><a href="#">Discord</a></li>
-                        <li><a href="#">Disclaimer</a></li>
-                        <li><a href="#">GitHub</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 NovaCode. Todos los derechos reservados.</p>
-            </div>
+        <div class="footer-info">
+          <div class="footer-copyright">
+            <i class="far fa-copyright"></i> 2024 NovaX Portal - Todos los derechos reservados
+          </div>
+          <div class="footer-creator">
+            Desarrollado con <i class="fas fa-heart" style="color: #ef4444;"></i> por <strong>NovaX Team</strong> | Diseño profesional para la comunidad Roblox
+          </div>
         </div>
-    </footer>
+      </div>
+      <div class="footer-right">
+        <div class="footer-social">
+          <a href="#" class="social-icon" id="twitterLink"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-icon" id="githubLink"><i class="fab fa-github"></i></a>
+          <a href="#" class="social-icon" id="youtubeLink"><i class="fab fa-youtube"></i></a>
+        </div>
+        <div class="footer-version">
+          <i class="fas fa-code-branch"></i> v2.0.0
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
 
-    <script src="assets/js/main.js"></script>
+<!-- MODAL PREVIEW -->
+<div id="previewModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modalTitle"><i class="fas fa-eye"></i> Vista previa</h3>
+      <button class="close-modal" id="closeModalBtn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <img id="modalImage" class="modal-preview" alt="preview">
+      <p id="modalDesc" style="margin-bottom: 1rem; line-height: 1.6;"></p>
+      
+      <div class="modal-details">
+        <div class="detail-row"><strong><i class="fas fa-tag"></i> Categoría:</strong> <span id="modalType"></span></div>
+        <div class="detail-row"><strong><i class="fas fa-hashtag"></i> Tags:</strong> <span id="modalTagsDetail"></span></div>
+        <div class="detail-row"><strong><i class="fas fa-eye"></i> Visualizaciones:</strong> <span id="modalViews"></span></div>
+        <div class="detail-row"><strong><i class="fas fa-download"></i> Descargas:</strong> <span id="modalDownloads"></span></div>
+        <div class="detail-row"><strong><i class="fas fa-link"></i> Enlace:</strong> <span id="modalUrl" style="word-break: break-all;"></span></div>
+      </div>
+      
+      <button class="download-btn" id="downloadBtn"><i class="fas fa-external-link-alt"></i> Descargar / Acceder al sitio</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  AOS.init({ once: true, duration: 600 });
+
+  // ========== DATOS PERSISTENTES ==========
+  let resources = [
+    { 
+      id: "script_nova", type: "script", typeName: "📜 Script", 
+      name: "Nova X Script Ultimate", 
+      desc: "Script completo para auto-farm, ESP visual, aimbot silencioso y auto-collect. Compatible con todos los ejecutores modernos. Incluye sistema anti-detección y actualizaciones automáticas.",
+      tags: ["AutoFarm", "ESP", "Aimbot", "Anti-Detección"], 
+      preview: "https://picsum.photos/id/104/600/300", 
+      downloadUrl: "https://example.com/download/novax-script", 
+      status: "🟢 Actualizado", statusClass: "badge-updated",
+      downloads: 0,
+      views: 0
+    },
+    { 
+      id: "executor_zenith", type: "executor", typeName: "⚡ Executor", 
+      name: "Zenith Executor Pro", 
+      desc: "Executor nivel 8 con bypass avanzado para Byfron, interfaz limpia, inyección ultrarrápida y soporte para scripts complejos. Actualizado semanalmente.",
+      tags: ["Executor", "Level 8", "Bypass", "UltraFast"], 
+      preview: "https://picsum.photos/id/29/600/300", 
+      downloadUrl: "https://example.com/download/zenith-executor", 
+      status: "🔥 TOP 1", statusClass: "badge-updated",
+      downloads: 0,
+      views: 0
+    },
+    { 
+      id: "tool_vortex", type: "herramienta", typeName: "🛠️ Herramienta", 
+      name: "Vortex Toolbox Pro", 
+      desc: "Suite completa de herramientas para Roblox: Fly, Speed Hack, Noclip, ESP visual, Silent Aim y más. Interfaz intuitiva con panel de control.",
+      tags: ["ESP", "Fly", "Speed", "Noclip", "Utility"], 
+      preview: "https://picsum.photos/id/20/600/300", 
+      downloadUrl: "https://example.com/download/vortex-tools", 
+      status: "🛠️ Profesional", statusClass: "",
+      downloads: 0,
+      views: 0
+    }
+  ];
+
+  function loadCounters() {
+    resources.forEach(res => {
+      const savedDownloads = localStorage.getItem(`novax_downloads_${res.id}`);
+      const savedViews = localStorage.getItem(`novax_views_${res.id}`);
+      res.downloads = savedDownloads ? parseInt(savedDownloads) : 0;
+      res.views = savedViews ? parseInt(savedViews) : 0;
+      if (!savedDownloads) localStorage.setItem(`novax_downloads_${res.id}`, "0");
+      if (!savedViews) localStorage.setItem(`novax_views_${res.id}`, "0");
+    });
+  }
+
+  function saveCounters(res) {
+    localStorage.setItem(`novax_downloads_${res.id}`, res.downloads.toString());
+    localStorage.setItem(`novax_views_${res.id}`, res.views.toString());
+  }
+
+  const channel = new BroadcastChannel('novax_stats_persistent');
+  function broadcastUpdate(resId, type, value) {
+    channel.postMessage({ id: resId, type: type, value: value });
+  }
+
+  channel.onmessage = (event) => {
+    const { id, type, value } = event.data;
+    const resource = resources.find(r => r.id === id);
+    if (resource) {
+      if (type === 'download') resource.downloads = value;
+      if (type === 'view') resource.views = value;
+      saveCounters(resource);
+      renderCards(document.getElementById("searchInput")?.value.toLowerCase() || "");
+      if (currentResource && currentResource.id === id) updateModalContent(currentResource);
+    }
+  };
+
+  function renderCards(filter = "") {
+    const container = document.getElementById("cardsContainer");
+    let filtered = resources.filter(i => 
+      i.name.toLowerCase().includes(filter) || 
+      i.type.includes(filter) || 
+      i.desc.toLowerCase().includes(filter) ||
+      i.tags.some(t => t.toLowerCase().includes(filter))
+    );
+    
+    if (filtered.length === 0) {
+      container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:3rem; background:var(--bg-secondary); border-radius:2rem;"><i class="fas fa-search" style="font-size:3rem; color:var(--border-glow);"></i><p>🔍 No hay resultados para "${filter}"</p></div>`;
+      return;
+    }
+    
+    container.innerHTML = filtered.map(item => `
+      <div class="card" data-id="${item.id}" data-aos="fade-up" data-aos-delay="0">
+        <div class="preview-img">
+          <img src="${item.preview}" alt="${item.name}" loading="lazy" onerror="this.src='https://picsum.photos/id/104/600/300'">
+        </div>
+        <div class="card-content">
+          <div class="card-header">
+            <div class="card-title"><i class="fas ${item.type === 'script' ? 'fa-code' : (item.type === 'executor' ? 'fa-terminal' : 'fa-cogs')}"></i> ${item.name}</div>
+            <span class="badge-status ${item.statusClass}">${item.status}</span>
+          </div>
+          <div class="desc">${item.desc.substring(0, 90)}...</div>
+          <div class="tags">${item.tags.map(t => `<span class="tag">#${t}</span>`).join('')}</div>
+          <div class="stats">
+            <span class="stat-item"><i class="fas fa-eye"></i> ${item.views.toLocaleString()} vistas</span>
+            <span class="stat-item"><i class="fas fa-download"></i> ${item.downloads.toLocaleString()} descargas</span>
+          </div>
+        </div>
+      </div>
+    `).join('');
+    
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        const id = card.getAttribute('data-id');
+        const resource = resources.find(r => r.id === id);
+        if (resource) {
+          resource.views++;
+          saveCounters(resource);
+          broadcastUpdate(resource.id, 'view', resource.views);
+          renderCards(document.getElementById("searchInput")?.value.toLowerCase() || "");
+          openModal(resource);
+        }
+      });
+    });
+  }
+
+  let currentResource = null;
+
+  function updateModalContent(res) {
+    document.getElementById("modalTitle").innerHTML = `<i class="fas fa-cube"></i> ${res.name}`;
+    document.getElementById("modalImage").src = res.preview;
+    document.getElementById("modalDesc").innerText = res.desc;
+    document.getElementById("modalType").innerHTML = `${res.typeName} / ${res.type.charAt(0).toUpperCase() + res.type.slice(1)}`;
+    document.getElementById("modalTagsDetail").innerHTML = res.tags.map(t => `<span class="tag" style="margin:2px; display:inline-block;">#${t}</span>`).join('');
+    document.getElementById("modalViews").innerHTML = res.views.toLocaleString();
+    document.getElementById("modalDownloads").innerHTML = res.downloads.toLocaleString();
+    document.getElementById("modalUrl").innerHTML = res.downloadUrl;
+  }
+
+  function openModal(res) {
+    currentResource = res;
+    updateModalContent(res);
+    document.getElementById("previewModal").style.display = "flex";
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() {
+    document.getElementById("previewModal").style.display = "none";
+    currentResource = null;
+    document.body.style.overflow = "";
+  }
+
+  function incrementDownloadAndRedirect(resource) {
+    if (!resource) return;
+    resource.downloads++;
+    saveCounters(resource);
+    broadcastUpdate(resource.id, 'download', resource.downloads);
+    renderCards(document.getElementById("searchInput")?.value.toLowerCase() || "");
+    if (currentResource && currentResource.id === resource.id) updateModalContent(resource);
+    window.open(resource.downloadUrl, "_blank");
+  }
+
+  // Eventos modales
+  document.getElementById("closeModalBtn").addEventListener("click", closeModal);
+  window.addEventListener("click", (e) => {
+    if (e.target === document.getElementById("previewModal")) closeModal();
+  });
+  document.getElementById("downloadBtn").addEventListener("click", () => {
+    if (currentResource) {
+      incrementDownloadAndRedirect(currentResource);
+      closeModal();
+    }
+  });
+  document.getElementById("homeBtn").addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    document.getElementById("searchInput").value = "";
+    renderCards("");
+  });
+  document.getElementById("discordBtn").addEventListener("click", () => window.open("https://discord.gg/novaxportal", "_blank"));
+  
+  // Redes sociales del footer
+  document.getElementById("twitterLink").addEventListener("click", (e) => { e.preventDefault(); window.open("https://twitter.com/novaxportal", "_blank"); });
+  document.getElementById("githubLink").addEventListener("click", (e) => { e.preventDefault(); window.open("https://github.com/novaxportal", "_blank"); });
+  document.getElementById("youtubeLink").addEventListener("click", (e) => { e.preventDefault(); window.open("https://youtube.com/@novaxportal", "_blank"); });
+  
+  // Toggle Theme
+  function initTheme() {
+    const saved = localStorage.getItem('novax_theme');
+    if (saved === 'light') {
+      document.body.classList.add('light');
+      document.getElementById("themeIcon").className = "fas fa-sun";
+      document.getElementById("themeText").innerText = "Light";
+    }
+  }
+  document.getElementById("themeToggle").addEventListener("click", () => {
+    document.body.classList.toggle('light');
+    const isLight = document.body.classList.contains('light');
+    localStorage.setItem('novax_theme', isLight ? 'light' : 'dark');
+    document.getElementById("themeIcon").className = isLight ? "fas fa-sun" : "fas fa-moon";
+    document.getElementById("themeText").innerText = isLight ? "Light" : "Dark";
+  });
+
+  const searchInput = document.getElementById("searchInput");
+  searchInput.addEventListener("input", (e) => renderCards(e.target.value.toLowerCase()));
+  document.querySelectorAll(".cat").forEach(cat => {
+    cat.addEventListener("click", () => {
+      const filterType = cat.getAttribute("data-filter");
+      searchInput.value = filterType;
+      renderCards(filterType);
+    });
+  });
+
+  particlesJS("particles-js", {
+    particles: { number: { value: 60 }, color: { value: "#3b82f6" }, shape: { type: "circle" }, opacity: { value: 0.4, random: true }, size: { value: 2, random: true }, line_linked: { enable: true, distance: 150, color: "#3b82f6", opacity: 0.2, width: 1 }, move: { enable: true, speed: 1.2, direction: "none", random: true } },
+    interactivity: { events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" } } },
+    retina_detect: true
+  });
+  
+  initTheme();
+  loadCounters();
+  renderCards("");
+</script>
 </body>
 </html>
