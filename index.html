@@ -56,19 +56,6 @@
       overflow: hidden;
     }
 
-    .glass::before {
-      content: '';
-      position: absolute;
-      top: -30%; right: -20%;
-      width: 60%; height: 160%;
-      background: radial-gradient(circle, rgba(94,158,255,0.06) 0%, transparent 70%);
-      pointer-events: none;
-      opacity: 0; transition: 0.5s;
-    }
-
-    .glass:hover::before { opacity: 1; }
-    .glass:hover { border-color: rgba(255,255,255,0.12); }
-
     button, .btn {
       background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.15);
@@ -90,8 +77,6 @@
       border-color: rgba(255,255,255,0.35);
       box-shadow: 0 0 25px rgba(94,158,255,0.3);
     }
-
-    button:active, .btn:active { transform: scale(0.97); }
 
     .btn-primary { background: var(--accent); border-color: var(--accent); font-weight: 600; }
     .btn-danger { background: rgba(255,94,122,0.2); border-color: var(--danger); color: var(--danger); }
@@ -118,8 +103,6 @@
     }
 
     .hidden { display: none !important; }
-    .fade-in { animation: fadeUp 0.3s ease forwards; }
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
     .material-icons-round { font-size: 1.3rem; vertical-align: middle; }
 
@@ -287,67 +270,33 @@
 
   <script>
   (function() {
-    // ========== CONFIGURACIÓN DE EMAILJS ==========
     const EMAILJS_CONFIG = {
       publicKey: 'R0J-_Fpwd_DUmfZm4',
       serviceId: 'service_ccxi4ib',
       templateId: 'template_p28280j',
     };
 
-    // Inicializar EmailJS
-    (function() {
-      if (EMAILJS_CONFIG.publicKey) {
-        emailjs.init(EMAILJS_CONFIG.publicKey);
-      }
-    })();
+    try { if (EMAILJS_CONFIG.publicKey) emailjs.init(EMAILJS_CONFIG.publicKey); } catch(e) {}
 
     async function sendWelcomeEmail(email, username, displayName, password, createdAt) {
       try {
-        const templateParams = {
-          to_email: email,
-          username: username,
-          display_name: displayName,
-          password: password,
-          created_at: createdAt,
-        };
-
-        const response = await emailjs.send(
-          EMAILJS_CONFIG.serviceId,
-          EMAILJS_CONFIG.templateId,
-          templateParams
-        );
-
-        console.log('Correo enviado exitosamente:', response);
-        return { success: true, response };
+        await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, {
+          to_email: email, username, display_name: displayName, password, created_at: createdAt
+        });
+        return { success: true };
       } catch (error) {
         console.error('Error al enviar correo:', error);
-        
-        // Respaldo: abrir cliente de correo
-        const subject = encodeURIComponent('Bienvenido a LiquidNexus Pro - Datos de tu cuenta');
-        const body = encodeURIComponent(
-          `¡Bienvenido a LiquidNexus Pro!\n\n` +
-          `Tus datos de acceso:\n` +
-          `Usuario: ${username}\n` +
-          `Contraseña: ${password}\n` +
-          `Email: ${email}\n` +
-          `Fecha de creación: ${createdAt}\n\n` +
-          `Guarda esta información de forma segura.\n\n` +
-          `© 2026 LiquidNexus Pro`
-        );
-        
-        window.open(`mailto:${email}?subject=${subject}&body=${body}`, '_blank');
-        
-        return { success: true, fallback: true };
+        return { success: false, error };
       }
     }
 
     const DB = {
-      users: JSON.parse(localStorage.getItem('ln12_users')) || {},
-      posts: JSON.parse(localStorage.getItem('ln12_posts')) || [],
-      messages: JSON.parse(localStorage.getItem('ln12_msgs')) || {},
-      ipRegistry: JSON.parse(localStorage.getItem('ln12_ips')) || {},
-      currentUser: JSON.parse(localStorage.getItem('ln12_session')) || null,
-      save(k) { try { localStorage.setItem('ln12_'+k, JSON.stringify(this[k])); } catch(e) {} }
+      users: JSON.parse(localStorage.getItem('ln14_users')) || {},
+      posts: JSON.parse(localStorage.getItem('ln14_posts')) || [],
+      messages: JSON.parse(localStorage.getItem('ln14_msgs')) || {},
+      ipRegistry: JSON.parse(localStorage.getItem('ln14_ips')) || {},
+      currentUser: JSON.parse(localStorage.getItem('ln14_session')) || null,
+      save(k) { try { localStorage.setItem('ln14_'+k, JSON.stringify(this[k])); } catch(e) {} }
     };
 
     function uid() { return Date.now().toString(36) + Math.random().toString(36).substr(2,8); }
@@ -356,8 +305,8 @@
     function findByEmail(em) { return Object.values(DB.users).find(u => u.email?.toLowerCase() === em?.toLowerCase()); }
 
     function getSimulatedIP() {
-      let ip = localStorage.getItem('ln12_sim_ip');
-      if (!ip) { ip = '192.168.' + Math.floor(Math.random()*255) + '.' + Math.floor(Math.random()*255); localStorage.setItem('ln12_sim_ip', ip); }
+      let ip = localStorage.getItem('ln14_sim_ip');
+      if (!ip) { ip = '192.168.' + Math.floor(Math.random()*255) + '.' + Math.floor(Math.random()*255); localStorage.setItem('ln14_sim_ip', ip); }
       return ip;
     }
 
@@ -381,6 +330,8 @@
     let currentTab = 'feed';
 
     function renderApp() {
+      document.querySelectorAll('.modal-overlay').forEach(m => m.remove());
+      
       if (!DB.currentUser || !DB.users[DB.currentUser]) {
         floatingButtons.style.display = 'none';
         mainFooter.style.display = 'none';
@@ -459,7 +410,6 @@
             <span class="strength-label" id="strengthLabel"></span>
           </div>
           <button id="rgBtn" class="btn-primary" style="width:100%;margin-top:0.8rem;">Crear cuenta</button>
-          <div id="emailStatus" style="margin-top:0.5rem; font-size:0.8rem; color:var(--text3);"></div>
         </div>
       `;
     }
@@ -469,12 +419,9 @@
         btn.onclick = function() {
           const input = document.getElementById(this.dataset.target);
           const icon = this.querySelector('.material-icons-round');
-          if (input.type === 'password') {
-            input.type = 'text';
-            icon.textContent = 'visibility';
-          } else {
-            input.type = 'password';
-            icon.textContent = 'visibility_off';
+          if (input && icon) {
+            if (input.type === 'password') { input.type = 'text'; icon.textContent = 'visibility'; }
+            else { input.type = 'password'; icon.textContent = 'visibility_off'; }
           }
         };
       });
@@ -482,17 +429,17 @@
       const liBtn = document.getElementById('liBtn');
       if (liBtn) {
         liBtn.onclick = () => {
-          const u = document.getElementById('liUser').value.trim();
-          const p = document.getElementById('liPass').value;
+          const u = document.getElementById('liUser')?.value?.trim();
+          const p = document.getElementById('liPass')?.value;
           if (!u || !p) return alert('Completa todos los campos');
           const user = findByUsername(u) || findByEmail(u) || getUser(u);
           if (user && user.password === p) {
             DB.currentUser = user.id;
             DB.save('session');
             if (document.getElementById('rememberMe')?.checked) {
-              localStorage.setItem('ln12_remember', JSON.stringify({ username: user.username, password: p }));
+              localStorage.setItem('ln14_remember', JSON.stringify({ username: user.username, password: p }));
             } else {
-              localStorage.removeItem('ln12_remember');
+              localStorage.removeItem('ln14_remember');
             }
             renderApp();
           } else alert('Credenciales incorrectas');
@@ -508,18 +455,16 @@
 
       if (rgBtn) {
         rgBtn.onclick = async function() {
-          const email = document.getElementById('rgEmail').value.trim();
-          const username = document.getElementById('rgUser').value.trim();
-          const displayName = document.getElementById('rgName').value.trim();
-          const password = document.getElementById('rgPass').value;
+          const email = document.getElementById('rgEmail')?.value?.trim();
+          const username = document.getElementById('rgUser')?.value?.trim();
+          const displayName = document.getElementById('rgName')?.value?.trim();
+          const password = document.getElementById('rgPass')?.value;
           const ip = getSimulatedIP();
           const accountsOnIP = DB.ipRegistry[ip] || 0;
-          const statusDiv = document.getElementById('emailStatus');
 
           if (!email || !username || !displayName || !password) return alert('Completa todos los campos');
           
-          const gmailRegex = /^[a-zA-Z0-9._%+-]+@(gmail|googlemail)\.com$/i;
-          if (!gmailRegex.test(email)) {
+          if (!/^[a-zA-Z0-9._%+-]+@(gmail|googlemail)\.com$/i.test(email)) {
             return alert('Solo se permiten correos de Gmail válidos (@gmail.com o @googlemail.com)');
           }
           
@@ -533,15 +478,12 @@
           const strength = getPasswordStrength(password);
           if (strength.level < 3 && !confirm(`Contraseña ${strength.label}. ¿Continuar?`)) return;
 
-          // Deshabilitar botón y mostrar estado
           rgBtn.disabled = true;
-          rgBtn.innerHTML = '<span class="spinner"></span> Creando cuenta...';
-          statusDiv.textContent = 'Enviando correo de confirmación...';
+          rgBtn.innerHTML = '<span class="spinner"></span> Creando...';
 
           const id = uid();
           const createdAt = new Date().toLocaleString('es-ES', { 
-            year: 'numeric', month: 'long', day: 'numeric', 
-            hour: '2-digit', minute: '2-digit' 
+            year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' 
           });
 
           DB.users[id] = {
@@ -554,32 +496,22 @@
           DB.ipRegistry[ip] = (DB.ipRegistry[ip] || 0) + 1;
           DB.save('users'); DB.save('ips');
 
-          // Enviar correo real con EmailJS
-          const emailResult = await sendWelcomeEmail(email, username, displayName, password, createdAt);
+          await sendWelcomeEmail(email, username, displayName, password, createdAt);
 
           rgBtn.disabled = false;
           rgBtn.innerHTML = 'Crear cuenta';
 
-          if (emailResult.success) {
-            alert('¡Cuenta creada exitosamente!\n\nSe ha enviado un correo con tus datos de acceso a: ' + email + '\n\nRevisa tu bandeja de entrada (y spam) para ver el correo.\n\nAhora inicia sesión.');
-            
-            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-            document.querySelector('[data-auth="login"]').classList.add('active');
-            document.getElementById('authForms').innerHTML = renderLoginForm();
-            bindAuthEvents();
-          } else {
-            statusDiv.textContent = 'Error al enviar el correo, pero la cuenta fue creada.';
-            alert('Cuenta creada pero hubo un problema al enviar el correo.\n\nTus datos son:\nUsuario: ' + username + '\nContraseña: ' + password + '\n\nGuárdalos de forma segura.');
-            
-            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
-            document.querySelector('[data-auth="login"]').classList.add('active');
-            document.getElementById('authForms').innerHTML = renderLoginForm();
-            bindAuthEvents();
-          }
+          alert('¡Cuenta creada exitosamente!\n\nSe ha enviado un correo con tus datos de acceso a: ' + email + '\n\nAhora inicia sesión.');
+          
+          document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+          const loginTab = document.querySelector('[data-auth="login"]');
+          if (loginTab) loginTab.classList.add('active');
+          document.getElementById('authForms').innerHTML = renderLoginForm();
+          bindAuthEvents();
         };
       }
 
-      const saved = JSON.parse(localStorage.getItem('ln12_remember') || '{}');
+      const saved = JSON.parse(localStorage.getItem('ln14_remember') || '{}');
       const liUser = document.getElementById('liUser');
       const liPass = document.getElementById('liPass');
       const remember = document.getElementById('rememberMe');
@@ -596,21 +528,16 @@
       const base = value.replace(/[^a-zA-Z0-9_]/g, '').toLowerCase();
       if (base.length < 2) { container.innerHTML = ''; return; }
       if (findByUsername(base)) {
-        const suggestions = [
-          base + '_' + Math.floor(Math.random()*100),
-          base + Math.floor(Math.random()*1000),
-          base + '_oficial',
-          base + '_pro'
-        ];
         container.innerHTML = '<small style="color:var(--warning);">No disponible. Sugerencias:</small>' +
-          suggestions.map(s => `<span class="username-suggestion">${s}</span>`).join('');
+          [base+'_'+Math.floor(Math.random()*100), base+Math.floor(Math.random()*1000), base+'_oficial', base+'_pro']
+          .map(s => `<span class="username-suggestion">${s}</span>`).join('');
       } else {
         container.innerHTML = '<small style="color:var(--success);">Disponible</small>';
       }
       container.querySelectorAll('.username-suggestion').forEach(s => {
         s.onclick = () => {
-          document.getElementById('rgUser').value = s.textContent;
-          container.innerHTML = '<small style="color:var(--success);">Disponible</small>';
+          const rgUser = document.getElementById('rgUser');
+          if (rgUser) { rgUser.value = s.textContent; container.innerHTML = '<small style="color:var(--success);">Disponible</small>'; }
         };
       });
     }
@@ -636,10 +563,13 @@
       label.className = 'strength-label ' + text;
     }
 
-    // ========== RESTO DE LA APP ==========
+    // ========== MAIN APP ==========
     function renderMain() {
       const user = DB.users[DB.currentUser];
+      if (!user) { DB.currentUser = null; DB.save('session'); renderApp(); return; }
+
       const totalLikes = DB.posts.filter(p => p.authorId === user.id).reduce((acc, p) => acc + p.likes.length, 0);
+      
       app.innerHTML = `
         <div class="glass topbar">
           <div class="topbar-left">
@@ -688,11 +618,14 @@
       currentTab = tab;
       const content = document.getElementById('tabContent');
       if (!content) return;
-      content.innerHTML = '';
-      switch(tab) {
-        case 'feed': renderFeed(content); break;
-        case 'friends': renderFriends(content); break;
-        case 'profile': renderProfile(content); break;
+      try {
+        switch(tab) {
+          case 'feed': renderFeed(content); break;
+          case 'friends': renderFriends(content); break;
+          case 'profile': renderProfile(content); break;
+        }
+      } catch(e) {
+        content.innerHTML = '<div class="glass" style="text-align:center;padding:3rem;color:var(--text3);">Error al cargar.</div>';
       }
     }
 
@@ -711,25 +644,31 @@
       }).join('');
     }
 
+    // ========== FEED GLOBAL ==========
     function renderFeed(container) {
       const user = DB.users[DB.currentUser];
-      const posts = DB.posts.filter(p => p.authorId === user.id || user.following.includes(p.authorId))
-                    .sort((a,b) => b.timestamp - a.timestamp);
+      if (!user) return;
+      
+      // MOSTRAR TODAS LAS PUBLICACIONES DE TODOS LOS USUARIOS (global)
+      const allPosts = [...DB.posts].sort((a,b) => b.timestamp - a.timestamp);
 
-      if (posts.length === 0) {
-        container.innerHTML = '<div class="glass" style="text-align:center;padding:3rem;color:var(--text3);">No hay publicaciones. Sigue a mas personas o crea tu primer post.</div>';
+      if (allPosts.length === 0) {
+        container.innerHTML = '<div class="glass" style="text-align:center;padding:3rem;color:var(--text3);">No hay publicaciones aún. ¡Sé el primero en publicar algo!</div>';
         return;
       }
 
-      const postsHTML = posts.map(p => {
-        const author = getUser(p.authorId) || { displayName: 'Usuario', avatar: '?', avatarType: 'text', username: 'unknown' };
+      let postsHTML = '';
+      
+      for (const p of allPosts) {
+        const author = getUser(p.authorId) || { displayName: 'Usuario eliminado', avatar: '?', avatarType: 'text', username: 'desconocido' };
         const isOwn = p.authorId === user.id;
         if (!p.comments) p.comments = [];
+        if (!p.likes) p.likes = [];
         const firstCommentId = p.comments.length > 0 ? p.comments[0].id : null;
         const isFollowing = user.following.includes(p.authorId);
 
-        return `
-          <div class="post fade-in" data-post-id="${p.id}">
+        postsHTML += `
+          <div class="post" data-post-id="${p.id}">
             ${isOwn ? `
               <button class="post-options-btn" data-post-id="${p.id}"><span class="material-icons-round">more_vert</span></button>
               <div class="post-options-menu" data-post-id="${p.id}">
@@ -781,15 +720,17 @@
             </div>
           </div>
         `;
-      }).join('');
+      }
 
       container.innerHTML = '<div id="postsContainer">' + postsHTML + '</div>';
 
       container.onclick = function(e) {
         const target = e.target;
-        if (target.closest('.quick-comment-btn')) {
+        
+        const quickCommentBtn = target.closest('.quick-comment-btn');
+        if (quickCommentBtn) {
           e.preventDefault();
-          const pid = target.closest('.quick-comment-btn').dataset.pid;
+          const pid = quickCommentBtn.dataset.pid;
           const input = container.querySelector(`.quick-comment-input[data-pid="${pid}"]`);
           if (!input) return;
           const text = input.value.trim();
@@ -799,13 +740,14 @@
           if (!post.comments) post.comments = [];
           post.comments.push({ id: uid(), userId: DB.currentUser, text, time: Date.now(), likes: [] });
           DB.save('posts');
-          input.value = '';
           switchTab('feed');
           return;
         }
-        if (target.closest('.post-options-btn')) {
+        
+        const optionsBtn = target.closest('.post-options-btn');
+        if (optionsBtn) {
           e.stopPropagation();
-          const postId = target.closest('.post-options-btn').dataset.postId;
+          const postId = optionsBtn.dataset.postId;
           const menu = container.querySelector(`.post-options-menu[data-post-id="${postId}"]`);
           if (menu) {
             const isOpen = menu.classList.contains('show');
@@ -814,25 +756,31 @@
           }
           return;
         }
-        if (target.closest('.edit-post-btn')) {
+        
+        const editBtn = target.closest('.edit-post-btn');
+        if (editBtn) {
           document.querySelectorAll('.post-options-menu.show').forEach(m => m.classList.remove('show'));
-          openEditPostModal(target.closest('.edit-post-btn').dataset.postId);
+          openEditPostModal(editBtn.dataset.postId);
           return;
         }
-        if (target.closest('.delete-post-btn')) {
+        
+        const deleteBtn = target.closest('.delete-post-btn');
+        if (deleteBtn) {
           document.querySelectorAll('.post-options-menu.show').forEach(m => m.classList.remove('show'));
-          const postId = target.closest('.delete-post-btn').dataset.postId;
           if (confirm('Eliminar esta publicacion?')) {
-            DB.posts = DB.posts.filter(p => p.id !== postId);
+            DB.posts = DB.posts.filter(p => p.id !== deleteBtn.dataset.postId);
             DB.save('posts');
             switchTab('feed');
           }
           return;
         }
-        if (target.closest('.like-btn')) {
-          const pid = target.closest('.like-btn').dataset.pid;
+        
+        const likeBtn = target.closest('.like-btn');
+        if (likeBtn) {
+          const pid = likeBtn.dataset.pid;
           const post = DB.posts.find(p => p.id === pid);
           if (!post) return;
+          if (!post.likes) post.likes = [];
           const idx = post.likes.indexOf(DB.currentUser);
           if (idx > -1) post.likes.splice(idx, 1);
           else post.likes.push(DB.currentUser);
@@ -840,13 +788,17 @@
           switchTab('feed');
           return;
         }
-        if (target.closest('.follow-btn')) {
-          toggleFollow(target.closest('.follow-btn').dataset.uid);
+        
+        const followBtn = target.closest('.follow-btn');
+        if (followBtn) {
+          toggleFollow(followBtn.dataset.uid);
           switchTab('feed');
           return;
         }
-        if (target.closest('.comment-btn-click')) {
-          openCommentsModal(target.closest('.comment-btn-click').dataset.pid);
+        
+        const commentBtn = target.closest('.comment-btn-click');
+        if (commentBtn) {
+          openCommentsModal(commentBtn.dataset.pid);
           return;
         }
       };
@@ -854,8 +806,10 @@
 
     function toggleFollow(targetId) {
       const user = DB.users[DB.currentUser];
+      if (!user) return;
       const target = getUser(targetId);
       if (!target || target.id === user.id) return;
+      
       if (user.following.includes(targetId)) {
         user.following = user.following.filter(id => id !== targetId);
         target.followers = target.followers.filter(id => id !== user.id);
@@ -898,6 +852,7 @@
       const post = DB.posts.find(p => p.id === postId);
       if (!post) return;
       const user = DB.users[DB.currentUser];
+      if (!user) return;
       if (!post.comments) post.comments = [];
       const firstCommentId = post.comments.length > 0 ? post.comments[0].id : null;
 
@@ -906,7 +861,7 @@
       overlay.innerHTML = `
         <div class="modal">
           <h3><span class="material-icons-round">forum</span> Comentarios (${post.comments.length})</h3>
-          <div id="commentsList" style="max-height:350px;overflow-y:auto;margin:0.8rem 0;">
+          <div style="max-height:350px;overflow-y:auto;margin:0.8rem 0;">
             ${post.comments.map(c => {
               const cu = getUser(c.userId) || { displayName: '?', avatar: '?', avatarType: 'text' };
               if (!c.likes) c.likes = [];
@@ -918,7 +873,7 @@
                     ${c.userId === post.authorId ? '<span class="author-badge">Autor</span>' : ''}
                     ${c.id === firstCommentId ? '<span class="first-comment-badge">Primer comentario</span>' : ''}
                     <p style="font-size:0.85rem;color:var(--text2);margin:0.2rem 0;">${c.text}</p>
-                    <div style="display:flex;gap:0.8rem;align-items:center;">
+                    <div style="display:flex;gap:0.8rem;">
                       <span class="comment-like-btn" data-cid="${c.id}" style="cursor:pointer;">
                         <span class="material-icons-round" style="font-size:0.9rem;color:${c.likes.includes(user.id)?'var(--danger)':'var(--text3)'};">
                           ${c.likes.includes(user.id)?'favorite':'favorite_border'}
@@ -1019,20 +974,13 @@
       fileInput.onchange = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
-        const isVideo = file.type.startsWith('video');
-        mediaType = isVideo ? 'video' : 'image';
+        mediaType = file.type.startsWith('video') ? 'video' : 'image';
         mediaData = await fileToBase64(file);
-        preview.innerHTML = isVideo ? `<video controls class="file-preview"><source src="${mediaData}"></video>` : `<img src="${mediaData}" class="file-preview">`;
+        preview.innerHTML = mediaType === 'video' ? `<video controls class="file-preview"><source src="${mediaData}"></video>` : `<img src="${mediaData}" class="file-preview">`;
         youtubeUrl.classList.add('hidden'); gifUrl.classList.add('hidden');
       };
-      overlay.querySelector('#addYoutubeBtn').onclick = () => {
-        youtubeUrl.classList.remove('hidden'); gifUrl.classList.add('hidden');
-        preview.innerHTML = ''; mediaType = 'youtube'; fileInput.value = '';
-      };
-      overlay.querySelector('#addGifBtn').onclick = () => {
-        gifUrl.classList.remove('hidden'); youtubeUrl.classList.add('hidden');
-        preview.innerHTML = ''; mediaType = 'gif'; fileInput.value = '';
-      };
+      overlay.querySelector('#addYoutubeBtn').onclick = () => { youtubeUrl.classList.remove('hidden'); gifUrl.classList.add('hidden'); preview.innerHTML = ''; mediaType = 'youtube'; };
+      overlay.querySelector('#addGifBtn').onclick = () => { gifUrl.classList.remove('hidden'); youtubeUrl.classList.add('hidden'); preview.innerHTML = ''; mediaType = 'gif'; };
       overlay.querySelector('#cancelPostBtn').onclick = () => overlay.remove();
       overlay.querySelector('#publishBtn').onclick = () => {
         const content = overlay.querySelector('#postContent').value.trim();
@@ -1051,6 +999,7 @@
 
     function openChatPanel() {
       const user = DB.users[DB.currentUser];
+      if (!user) return;
       const friends = user.friends.map(id => getUser(id)).filter(Boolean);
       const overlay = document.createElement('div');
       overlay.className = 'modal-overlay';
@@ -1058,13 +1007,13 @@
         <div class="modal">
           <h3><span class="material-icons-round">chat_bubble</span> Chats</h3>
           <div style="max-height:300px;overflow-y:auto;margin:0.8rem 0;">
-            ${friends.map(f => `
+            ${friends.length ? friends.map(f => `
               <div data-fid="${f.id}" style="display:flex;align-items:center;gap:0.6rem;padding:0.6rem;cursor:pointer;border-radius:12px;"
                    onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
                 <div class="avatar avatar-sm">${f.avatarType==='image'?`<img src="${f.avatar}">`:f.avatar}</div>
                 <div><strong>${f.displayName}</strong><small style="display:block;color:var(--text3);">@${f.username}</small></div>
               </div>
-            `).join('') || '<p style="color:var(--text3);">No tienes amigos aun.</p>'}
+            `).join('') : '<p style="color:var(--text3);">No tienes amigos aun.</p>'}
           </div>
           <button id="closeChatPanel" class="btn-sm">Cerrar</button>
         </div>
@@ -1079,6 +1028,7 @@
 
     function openQuickChat(friendId) {
       const user = DB.users[DB.currentUser];
+      if (!user) return;
       const friend = getUser(friendId);
       if (!friend) return;
       const key = [user.id, friendId].sort().join('_');
@@ -1105,14 +1055,12 @@
         </div>
       `;
       document.body.appendChild(overlay);
-      const chatFileInput = overlay.querySelector('#chatFileInput');
       function load() {
-        overlay.querySelector('#quickMsgBox').innerHTML = DB.messages[key].map(m => {
-          let mediaHTML = '';
-          if (m.media) {
-            mediaHTML = m.media.type === 'image' ? `<img src="${m.media.url}" style="max-width:200px;border-radius:10px;">` : `<video controls style="max-width:200px;"><source src="${m.media.url}"></video>`;
-          }
-          return `<div style="text-align:${m.from===user.id?'right':'left'};"><span style="background:${m.from===user.id?'var(--accent)':'rgba(255,255,255,0.1)'};padding:0.5rem;border-radius:18px;display:inline-block;max-width:80%;">${mediaHTML}${m.text||''}</span></div>`;
+        const mb = overlay.querySelector('#quickMsgBox');
+        if (mb) mb.innerHTML = DB.messages[key].map(m => {
+          let mh = '';
+          if (m.media) mh = m.media.type==='image'?`<img src="${m.media.url}" style="max-width:200px;border-radius:10px;">`:`<video controls style="max-width:200px;"><source src="${m.media.url}"></video>`;
+          return `<div style="text-align:${m.from===user.id?'right':'left'};"><span style="background:${m.from===user.id?'var(--accent)':'rgba(255,255,255,0.1)'};padding:0.5rem;border-radius:18px;display:inline-block;max-width:80%;">${mh}${m.text||''}</span></div>`;
         }).join('');
       }
       load();
@@ -1124,20 +1072,21 @@
         DB.save('messages'); load();
         overlay.querySelector('#quickMsgInput').value = '';
       };
-      overlay.querySelector('#sendPhotoBtn').onclick = () => { chatFileInput.accept = 'image/*'; chatFileInput.click(); };
-      overlay.querySelector('#sendVideoBtn').onclick = () => { chatFileInput.accept = 'video/*'; chatFileInput.click(); };
-      chatFileInput.onchange = async (e) => {
+      overlay.querySelector('#sendPhotoBtn').onclick = () => { overlay.querySelector('#chatFileInput').accept='image/*'; overlay.querySelector('#chatFileInput').click(); };
+      overlay.querySelector('#sendVideoBtn').onclick = () => { overlay.querySelector('#chatFileInput').accept='video/*'; overlay.querySelector('#chatFileInput').click(); };
+      overlay.querySelector('#chatFileInput').onchange = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
-        const dataUrl = await fileToBase64(file);
-        DB.messages[key].push({ from: user.id, text: '', media: { type: file.type.startsWith('video')?'video':'image', url: dataUrl }, time: Date.now() });
-        DB.save('messages'); load(); chatFileInput.value = '';
+        const du = await fileToBase64(file);
+        DB.messages[key].push({ from: user.id, text: '', media: { type: file.type.startsWith('video')?'video':'image', url: du }, time: Date.now() });
+        DB.save('messages'); load();
       };
       overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
     }
 
     function renderFriends(container) {
       const user = DB.users[DB.currentUser];
+      if (!user) return;
       container.innerHTML = `
         <div class="glass">
           <h3><span class="material-icons-round">person_search</span> Buscar</h3>
@@ -1156,9 +1105,11 @@
         </div>
       `;
       document.getElementById('searchBtn').onclick = () => {
-        const q = document.getElementById('searchUser').value.trim();
+        const q = document.getElementById('searchUser')?.value?.trim();
+        if (!q) return;
         const found = findByUsername(q) || getUser(q);
         const res = document.getElementById('searchResult');
+        if (!res) return;
         if (!found) { res.innerHTML = '<p style="color:var(--danger);">No encontrado</p>'; return; }
         if (found.id === user.id) { res.innerHTML = '<p>Eres tu</p>'; return; }
         const isF = user.following.includes(found.id);
@@ -1166,12 +1117,13 @@
       };
       container.onclick = (e) => {
         const btn = e.target.closest('.follow-btn') || e.target.closest('.unfollow-btn');
-        if (btn) { toggleFollow(btn.dataset.uid); renderFriends(container); }
+        if (btn) { toggleFollow(btn.dataset.uid); switchTab('friends'); }
       };
     }
 
     function renderProfile(container) {
       const user = DB.users[DB.currentUser];
+      if (!user) return;
       container.innerHTML = `
         <div class="glass" style="text-align:center;">
           <div class="avatar avatar-lg" style="margin:0 auto;">${user.avatarType==='image'?`<img src="${user.avatar}">`:user.avatar}</div>
@@ -1202,14 +1154,8 @@
         </div>
       `;
       let newAvatarData = null;
-      document.getElementById('editProfileBtn').onclick = () => {
-        document.getElementById('profileInfo').classList.add('hidden');
-        document.getElementById('profileEditForm').classList.remove('hidden');
-      };
-      document.getElementById('cancelEditBtn').onclick = () => {
-        document.getElementById('profileEditForm').classList.add('hidden');
-        document.getElementById('profileInfo').classList.remove('hidden');
-      };
+      document.getElementById('editProfileBtn').onclick = () => { document.getElementById('profileInfo').classList.add('hidden'); document.getElementById('profileEditForm').classList.remove('hidden'); };
+      document.getElementById('cancelEditBtn').onclick = () => { document.getElementById('profileEditForm').classList.add('hidden'); document.getElementById('profileInfo').classList.remove('hidden'); };
       document.getElementById('changeAvatarFileBtn').onclick = () => document.getElementById('avatarFileInput').click();
       document.getElementById('avatarFileInput').onchange = async (e) => {
         const file = e.target.files[0];
