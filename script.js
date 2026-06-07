@@ -1,152 +1,300 @@
-// Datos de ejemplo (simulando backend)
-let currentUser = {
-    id: 1,
-    username: "usuario_demo",
-    avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-    role: "user"
-};
+// Sistema de autenticación (simulado)
+let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
 
-let posts = [
-    {
-        id: 1,
-        author: {
-            id: 2,
-            name: "Ana García",
-            username: "@ana_garcia",
-            avatar: "https://randomuser.me/api/portraits/women/2.jpg"
-        },
-        content: "¡Bienvenidos a Liquid Social! Una nueva forma de conectar sin límites 🌊",
-        media: null,
-        likes: 45,
-        comments: 12,
-        shares: 5,
-        timestamp: "2024-01-15T10:30:00",
-        likedByCurrentUser: false
-    },
-    {
-        id: 2,
-        author: {
-            id: 3,
-            name: "Carlos Ruiz",
-            username: "@carlos_tech",
-            avatar: "https://randomuser.me/api/portraits/men/3.jpg"
-        },
-        content: "Probando la nueva función de mensajería en tiempo real. ¡Increíble! 🚀",
-        media: null,
-        likes: 23,
-        comments: 7,
-        shares: 2,
-        timestamp: "2024-01-15T09:15:00",
-        likedByCurrentUser: true
+// Función de login
+function login(email, password) {
+    // Simulación de autenticación
+    if (email && password) {
+        currentUser = {
+            id: 1,
+            username: 'usuario_demo',
+            email: email,
+            avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
+            role: 'user',
+            name: 'Carlos Martínez'
+        };
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        window.location.href = 'index.html';
+        return true;
     }
-];
+    return false;
+}
 
-// Cargar publicaciones en el feed
-function loadFeed() {
-    const feedContainer = document.getElementById('feedPosts');
-    if (!feedContainer) return;
+// Función de registro
+function register(username, email, password, confirmPassword) {
+    if (password !== confirmPassword) {
+        alert('Las contraseñas no coinciden');
+        return false;
+    }
     
-    feedContainer.innerHTML = '';
+    if (username && email && password) {
+        currentUser = {
+            id: Date.now(),
+            username: username,
+            email: email,
+            avatar: 'https://randomuser.me/api/portraits/men/1.jpg',
+            role: 'user',
+            name: username
+        };
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        window.location.href = 'index.html';
+        return true;
+    }
+    return false;
+}
+
+// Logout
+function logout() {
+    localStorage.removeItem('currentUser');
+    window.location.href = 'login.html';
+}
+
+// Verificar si el usuario está autenticado
+function checkAuth() {
+    if (!currentUser && !window.location.pathname.includes('login.html') && 
+        !window.location.pathname.includes('register.html')) {
+        window.location.href = 'login.html';
+    }
+}
+
+// Configurar eventos según la página actual
+document.addEventListener('DOMContentLoaded', () => {
+    checkAuth();
     
-    posts.forEach(post => {
-        const postElement = createPostElement(post);
-        feedContainer.appendChild(postElement);
+    // Login page
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            login(email, password);
+        });
+    }
+    
+    // Register page
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            register(username, email, password, confirmPassword);
+        });
+    }
+    
+    // Logout buttons
+    document.querySelectorAll('.logout-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            logout();
+        });
     });
-}
-
-// Crear elemento HTML de publicación
-function createPostElement(post) {
-    const postDiv = document.createElement('div');
-    postDiv.className = 'post-card';
-    postDiv.dataset.postId = post.id;
     
-    const postDate = new Date(post.timestamp);
-    const timeAgo = getTimeAgo(postDate);
+    // Toggle password visibility
+    document.querySelectorAll('.toggle-password').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            if (input.type === 'password') {
+                input.type = 'text';
+                this.classList.remove('fa-eye');
+                this.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                this.classList.remove('fa-eye-slash');
+                this.classList.add('fa-eye');
+            }
+        });
+    });
     
-    postDiv.innerHTML = `
-        <div class="post-header">
-            <img src="${post.author.avatar}" class="avatar" alt="">
-            <div class="post-author-info">
-                <div class="post-author-name">${post.author.name}</div>
-                <div class="post-author-username">${post.author.username}</div>
-            </div>
-            <div class="post-time">${timeAgo}</div>
-            <div class="post-menu"><i class="fas fa-ellipsis-h"></i></div>
-        </div>
-        <div class="post-content">
-            <p>${escapeHtml(post.content)}</p>
-        </div>
-        ${post.media ? `<img src="${post.media}" class="post-media" alt="">` : ''}
-        <div class="post-stats">
-            <span><i class="fas fa-heart"></i> ${post.likes} likes</span>
-            <span><i class="fas fa-comment"></i> ${post.comments} comentarios</span>
-            <span><i class="fas fa-share"></i> ${post.shares} compartidos</span>
-        </div>
-        <div class="post-actions-buttons">
-            <button class="action-btn like-btn ${post.likedByCurrentUser ? 'liked' : ''}">
-                <i class="fas fa-heart"></i> Like
-            </button>
-            <button class="action-btn comment-btn">
-                <i class="fas fa-comment"></i> Comentar
-            </button>
-            <button class="action-btn share-btn">
-                <i class="fas fa-share"></i> Compartir
-            </button>
-        </div>
-    `;
-    
-    // Agregar eventos
-    const likeBtn = postDiv.querySelector('.like-btn');
-    likeBtn.addEventListener('click', () => toggleLike(post.id, likeBtn));
-    
-    return postDiv;
-}
-
-// Alternar like
-function toggleLike(postId, button) {
-    const post = posts.find(p => p.id === postId);
-    if (post) {
-        post.likedByCurrentUser = !post.likedByCurrentUser;
-        post.likes += post.likedByCurrentUser ? 1 : -1;
-        
-        if (post.likedByCurrentUser) {
-            button.classList.add('liked');
-            showNotification('Le diste like a una publicación');
-        } else {
-            button.classList.remove('liked');
-        }
-        
-        loadFeed(); // Recargar feed para actualizar contadores
+    // Modal de recuperar contraseña
+    const forgotLink = document.getElementById('forgotPasswordLink');
+    if (forgotLink) {
+        forgotLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('forgotPasswordModal').style.display = 'flex';
+        });
     }
-}
-
-// Crear nueva publicación
-function createPost(content, mediaUrl = null) {
-    if (!content.trim() && !mediaUrl) return;
     
-    const newPost = {
-        id: Date.now(),
-        author: {
-            id: currentUser.id,
-            name: currentUser.username,
-            username: `@${currentUser.username}`,
-            avatar: currentUser.avatar
-        },
-        content: content,
-        media: mediaUrl,
-        likes: 0,
-        comments: 0,
-        shares: 0,
-        timestamp: new Date().toISOString(),
-        likedByCurrentUser: false
-    };
+    // Cerrar modales
+    document.querySelectorAll('.close-modal').forEach(closeBtn => {
+        closeBtn.addEventListener('click', function() {
+            this.closest('.modal').style.display = 'none';
+        });
+    });
     
-    posts.unshift(newPost);
-    loadFeed();
-    showNotification('¡Publicación creada con éxito!');
-}
+    // Editar perfil
+    const editProfileBtn = document.getElementById('editProfileBtn');
+    if (editProfileBtn) {
+        editProfileBtn.addEventListener('click', () => {
+            document.getElementById('editProfileModal').style.display = 'flex';
+        });
+    }
+    
+    // Guardar cambios de perfil
+    const saveProfileBtn = document.getElementById('saveProfileBtn');
+    if (saveProfileBtn) {
+        saveProfileBtn.addEventListener('click', () => {
+            const newName = document.getElementById('editName').value;
+            const newBio = document.getElementById('editBio').value;
+            const newLocation = document.getElementById('editLocation').value;
+            const newStatus = document.getElementById('editStatus').value;
+            
+            if (newName) document.getElementById('profileName').textContent = newName;
+            if (newBio) document.getElementById('profileBio').textContent = newBio;
+            if (newLocation) document.getElementById('profileLocation').textContent = newLocation;
+            
+            document.getElementById('editProfileModal').style.display = 'none';
+            showNotification('Perfil actualizado correctamente');
+        });
+    }
+    
+    // Sistema de mensajería
+    const sendMessageBtn = document.getElementById('sendMessageBtn');
+    const messageInput = document.getElementById('messageInput');
+    const chatMessages = document.getElementById('chatMessages');
+    
+    if (sendMessageBtn && messageInput && chatMessages) {
+        sendMessageBtn.addEventListener('click', () => {
+            const message = messageInput.value.trim();
+            if (message) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message sent';
+                messageDiv.innerHTML = `
+                    <div class="message-content">
+                        <div class="message-text">${escapeHtml(message)}</div>
+                        <div class="message-time">${new Date().toLocaleTimeString().slice(0,5)}</div>
+                        <i class="fas fa-check-double read"></i>
+                    </div>
+                `;
+                chatMessages.appendChild(messageDiv);
+                messageInput.value = '';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+        });
+        
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessageBtn.click();
+            }
+        });
+    }
+    
+    // Emojis en chat
+    const emojiBtn = document.getElementById('emojiBtn');
+    const emojiPicker = document.getElementById('emojiPicker');
+    
+    if (emojiBtn && emojiPicker) {
+        emojiBtn.addEventListener('click', () => {
+            emojiPicker.style.display = emojiPicker.style.display === 'none' ? 'flex' : 'none';
+        });
+        
+        document.querySelectorAll('.emoji').forEach(emoji => {
+            emoji.addEventListener('click', () => {
+                if (messageInput) {
+                    messageInput.value += emoji.textContent;
+                    emojiPicker.style.display = 'none';
+                }
+            });
+        });
+    }
+    
+    // Cambiar entre conversaciones
+    document.querySelectorAll('.conversation-item').forEach(conv => {
+        conv.addEventListener('click', function() {
+            document.querySelectorAll('.conversation-item').forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+            const userName = this.querySelector('.conversation-name').textContent;
+            const userAvatar = this.querySelector('img').src;
+            document.getElementById('chatUserName').textContent = userName;
+            document.getElementById('chatUserAvatar').src = userAvatar;
+        });
+    });
+    
+    // Crear grupo
+    const createGroupBtn = document.getElementById('createGroupBtn');
+    if (createGroupBtn) {
+        createGroupBtn.addEventListener('click', () => {
+            document.getElementById('createGroupModal').style.display = 'flex';
+        });
+    }
+    
+    // Unirse a grupos
+    document.querySelectorAll('.join-group-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            if (this.textContent === 'Unirse') {
+                this.textContent = 'Unido';
+                this.classList.add('joined');
+                showNotification('Te has unido al grupo');
+            } else {
+                this.textContent = 'Unirse';
+                this.classList.remove('joined');
+            }
+        });
+    });
+    
+    // Admin tabs
+    document.querySelectorAll('.admin-tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+            const target = this.dataset.adminTab;
+            document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+            this.classList.add('active');
+            document.getElementById('usersTable').style.display = target === 'users' ? 'block' : 'none';
+            document.getElementById('reportsTable').style.display = target === 'reports' ? 'block' : 'none';
+        });
+    });
+    
+    // Settings tabs
+    document.querySelectorAll('.settings-nav').forEach(nav => {
+        nav.addEventListener('click', function() {
+            const section = this.dataset.section;
+            document.querySelectorAll('.settings-nav').forEach(n => n.classList.remove('active'));
+            this.classList.add('active');
+            document.querySelectorAll('.settings-section').forEach(sec => sec.style.display = 'none');
+            document.getElementById(`${section}Section`).style.display = 'block';
+        });
+    });
+    
+    // Theme switcher
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const theme = this.dataset.theme;
+            document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            if (theme === 'dark') {
+                document.body.classList.add('dark-theme');
+            } else {
+                document.body.classList.remove('dark-theme');
+            }
+        });
+    });
+    
+    // Gráfico de admin (si existe canvas)
+    const chartCanvas = document.getElementById('activityChart');
+    if (chartCanvas && typeof Chart !== 'undefined') {
+        new Chart(chartCanvas, {
+            type: 'line',
+            data: {
+                labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+                datasets: [{
+                    label: 'Usuarios activos',
+                    data: [1200, 1350, 1400, 1550, 1700, 1900, 2100],
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true
+            }
+        });
+    }
+});
 
-// Mostrar notificación toast
+// Función para mostrar notificaciones
 function showNotification(message) {
     const toast = document.createElement('div');
     toast.className = 'toast-notification';
@@ -162,139 +310,89 @@ function showNotification(message) {
         z-index: 2000;
         animation: slideIn 0.3s ease;
     `;
-    
     document.body.appendChild(toast);
-    
-    setTimeout(() => {
-        toast.remove();
-    }, 3000);
+    setTimeout(() => toast.remove(), 3000);
 }
 
-// Calcular tiempo transcurrido
-function getTimeAgo(date) {
-    const seconds = Math.floor((new Date() - date) / 1000);
-    
-    if (seconds < 60) return 'ahora mismo';
-    const minutes = Math.floor(seconds / 60);
-    if (minutes < 60) return `hace ${minutes} min`;
-    const hours = Math.floor(minutes / 60);
-    if (hours < 24) return `hace ${hours} h`;
-    const days = Math.floor(hours / 24);
-    if (days < 7) return `hace ${days} d`;
-    return date.toLocaleDateString();
-}
-
-// Escapar HTML para evitar XSS
 function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
 }
 
-// Modal de notificaciones
-function setupModals() {
-    const modal = document.getElementById('notificationsModal');
-    const btn = document.getElementById('notificationsBtn');
-    const closeBtn = document.querySelector('.close-modal');
-    
-    if (btn && modal) {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            modal.style.display = 'flex';
-        });
-        
-        if (closeBtn) {
-            closeBtn.addEventListener('click', () => {
-                modal.style.display = 'none';
-            });
-        }
-        
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-    }
-}
-
-// Inicializar
-document.addEventListener('DOMContentLoaded', () => {
-    loadFeed();
-    setupModals();
-    
-    // Botón de crear publicación
-    const createPostBtn = document.getElementById('createPostBtn');
-    const postContent = document.getElementById('postContent');
-    
-    if (createPostBtn && postContent) {
-        createPostBtn.addEventListener('click', () => {
-            createPost(postContent.value);
-            postContent.value = '';
-        });
-    }
-    
-    // Búsqueda global
-    const searchInput = document.getElementById('globalSearch');
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            if (searchTerm.length > 2) {
-                const filtered = posts.filter(post => 
-                    post.content.toLowerCase().includes(searchTerm) ||
-                    post.author.name.toLowerCase().includes(searchTerm)
-                );
-                const feedContainer = document.getElementById('feedPosts');
-                if (feedContainer) {
-                    feedContainer.innerHTML = '';
-                    filtered.forEach(post => {
-                        feedContainer.appendChild(createPostElement(post));
-                    });
-                }
-            } else if (searchTerm.length === 0) {
-                loadFeed();
-            }
-        });
-    }
-    
-    // Botones de seguir (simulación)
-    document.querySelectorAll('.follow-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            if (this.textContent === 'Seguir') {
-                this.textContent = 'Siguiendo';
-                this.style.background = '#2ecc71';
-                this.style.borderColor = '#2ecc71';
-                this.style.color = 'white';
-                showNotification('¡Ahora sigues a este usuario!');
-            } else {
-                this.textContent = 'Seguir';
-                this.style.background = 'none';
-                this.style.borderColor = '#667eea';
-                this.style.color = '#667eea';
-            }
-        });
-    });
-});
-
-// Animaciones CSS adicionales
-const style = document.createElement('style');
-style.textContent = `
+// CSS adicional para animaciones
+const styleSheet = document.createElement('style');
+styleSheet.textContent = `
     @keyframes slideIn {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
     }
     
-    .toast-notification {
-        animation: slideIn 0.3s ease;
+    .dark-theme {
+        background: #1a1a2e;
+        color: white;
+    }
+    
+    .dark-theme .sidebar,
+    .dark-theme .right-sidebar,
+    .dark-theme .post-card,
+    .dark-theme .group-card {
+        background: #16213e;
+        color: white;
     }
     
     .action-btn.liked {
         color: #e74c3c;
     }
+    
+    .joined {
+        background: #2ecc71;
+        color: white;
+        border-color: #2ecc71;
+    }
+    
+    .status-badge {
+        padding: 4px 8px;
+        border-radius: 20px;
+        font-size: 12px;
+    }
+    
+    .status-badge.active { background: #2ecc71; color: white; }
+    .status-badge.suspended { background: #e74c3c; color: white; }
+    
+    .table-avatar {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        vertical-align: middle;
+        margin-right: 8px;
+    }
+    
+    .emoji-picker {
+        position: absolute;
+        bottom: 80px;
+        left: 20px;
+        background: white;
+        border-radius: 12px;
+        padding: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 100;
+    }
+    
+    .emoji-list {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+    }
+    
+    .emoji {
+        font-size: 24px;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    
+    .emoji:hover {
+        transform: scale(1.2);
+    }
 `;
-document.head.appendChild(style);
+document.head.appendChild(styleSheet);
