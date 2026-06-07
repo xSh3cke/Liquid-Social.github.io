@@ -1,1 +1,138 @@
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensajes - Liquid Social</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-droplet"></i>
+                <span>Liquid Social</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>Inicio</span></a>
+                <a href="explorar.html" class="nav-item"><i class="fas fa-compass"></i><span>Explorar</span></a>
+                <a href="mensajes.html" class="nav-item active"><i class="fas fa-envelope"></i><span>Mensajes</span></a>
+                <a href="grupos.html" class="nav-item"><i class="fas fa-users"></i><span>Grupos</span></a>
+                <a href="perfil.html" class="nav-item"><i class="fas fa-user"></i><span>Perfil</span></a>
+            </nav>
+        </aside>
+        
+        <!-- Contenedor de mensajería -->
+        <main class="messages-container">
+            <!-- Lista de conversaciones -->
+            <div class="conversations-list">
+                <div class="conversations-header">
+                    <h3>Mensajes</h3>
+                    <button id="newMessageBtn" class="icon-btn"><i class="fas fa-pen"></i></button>
+                </div>
+                <div class="search-conversations">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Buscar conversación" id="searchConversation">
+                </div>
+                <div class="conversations" id="conversationsList">
+                    <!-- Conversaciones cargadas dinámicamente -->
+                    <div class="conversation-item active" data-user-id="2">
+                        <img src="https://randomuser.me/api/portraits/women/2.jpg" alt="">
+                        <div class="conversation-info">
+                            <div class="conversation-name">Ana García</div>
+                            <div class="conversation-preview">¡Hola! ¿Cómo estás?</div>
+                        </div>
+                        <div class="conversation-time">10:30</div>
+                    </div>
+                    <div class="conversation-item" data-user-id="3">
+                        <img src="https://randomuser.me/api/portraits/men/3.jpg" alt="">
+                        <div class="conversation-info">
+                            <div class="conversation-name">Carlos Ruiz</div>
+                            <div class="conversation-preview">Viste la nueva actualización...</div>
+                        </div>
+                        <div class="conversation-time">09:15</div>
+                    </div>
+                    <div class="conversation-item" data-user-id="4">
+                        <img src="https://randomuser.me/api/portraits/women/5.jpg" alt="">
+                        <div class="conversation-info">
+                            <div class="conversation-name">María López</div>
+                            <div class="conversation-preview">Genial, nos vemos mañana</div>
+                        </div>
+                        <div class="conversation-time">Ayer</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Área de chat -->
+            <div class="chat-area">
+                <div class="chat-header" id="chatHeader">
+                    <img src="https://randomuser.me/api/portraits/women/2.jpg" alt="" id="chatUserAvatar">
+                    <div class="chat-user-info">
+                        <div class="chat-user-name" id="chatUserName">Ana García</div>
+                        <div class="chat-user-status" id="chatUserStatus">En línea</div>
+                    </div>
+                    <div class="chat-actions">
+                        <button class="icon-btn"><i class="fas fa-phone"></i></button>
+                        <button class="icon-btn"><i class="fas fa-video"></i></button>
+                        <button class="icon-btn" id="chatInfoBtn"><i class="fas fa-info-circle"></i></button>
+                    </div>
+                </div>
+                
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Mensajes cargados dinámicamente -->
+                    <div class="message received">
+                        <img src="https://randomuser.me/api/portraits/women/2.jpg" alt="">
+                        <div class="message-content">
+                            <div class="message-text">¡Hola! ¿Cómo estás?</div>
+                            <div class="message-time">10:30</div>
+                        </div>
+                    </div>
+                    <div class="message sent">
+                        <div class="message-content">
+                            <div class="message-text">Hola Ana! Todo bien, ¿y tú?</div>
+                            <div class="message-time">10:32</div>
+                            <i class="fas fa-check-double read"></i>
+                        </div>
+                    </div>
+                    <div class="message received">
+                        <img src="https://randomuser.me/api/portraits/women/2.jpg" alt="">
+                        <div class="message-content">
+                            <div class="message-text">Muy bien, gracias por preguntar 😊</div>
+                            <div class="message-time">10:33</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-input-area">
+                    <button class="icon-btn" id="attachFileBtn"><i class="fas fa-paperclip"></i></button>
+                    <button class="icon-btn" id="emojiBtn"><i class="fas fa-smile"></i></button>
+                    <input type="text" placeholder="Escribe un mensaje..." id="messageInput">
+                    <button class="icon-btn" id="voiceMessageBtn"><i class="fas fa-microphone"></i></button>
+                    <button class="btn-primary" id="sendMessageBtn">Enviar</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Emoji picker (simple) -->
+    <div class="emoji-picker" id="emojiPicker" style="display: none;">
+        <div class="emoji-list">
+            <span class="emoji">😊</span>
+            <span class="emoji">😂</span>
+            <span class="emoji">❤️</span>
+            <span class="emoji">🔥</span>
+            <span class="emoji">👍</span>
+            <span class="emoji">🎉</span>
+            <span class="emoji">😢</span>
+            <span class="emoji">😍</span>
+            <span class="emoji">🤣</span>
+            <span class="emoji">💯</span>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
