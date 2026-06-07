@@ -1,1 +1,145 @@
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - Liquid Social</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar (mismo que index.html) -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-droplet"></i>
+                <span>Liquid Social</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>Inicio</span></a>
+                <a href="explorar.html" class="nav-item"><i class="fas fa-compass"></i><span>Explorar</span></a>
+                <a href="mensajes.html" class="nav-item"><i class="fas fa-envelope"></i><span>Mensajes</span></a>
+                <a href="grupos.html" class="nav-item"><i class="fas fa-users"></i><span>Grupos</span></a>
+                <a href="perfil.html" class="nav-item active"><i class="fas fa-user"></i><span>Perfil</span></a>
+                <a href="configuracion.html" class="nav-item"><i class="fas fa-cog"></i><span>Configuración</span></a>
+            </nav>
+        </aside>
+        
+        <!-- Contenido del perfil -->
+        <main class="main-content profile-page">
+            <!-- Banner -->
+            <div class="profile-banner" id="profileBanner">
+                <img src="https://picsum.photos/1200/300?random=1" alt="Banner" id="bannerImg">
+                <button class="edit-banner-btn" id="editBannerBtn"><i class="fas fa-camera"></i></button>
+            </div>
+            
+            <!-- Info del perfil -->
+            <div class="profile-info-container">
+                <div class="profile-avatar-container">
+                    <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Avatar" class="profile-avatar" id="profileAvatar">
+                    <button class="edit-avatar-btn" id="editAvatarBtn"><i class="fas fa-camera"></i></button>
+                </div>
+                
+                <div class="profile-actions">
+                    <button class="btn-secondary" id="editProfileBtn"><i class="fas fa-pen"></i> Editar perfil</button>
+                    <button class="btn-secondary" id="shareProfileBtn"><i class="fas fa-share"></i> Compartir</button>
+                </div>
+            </div>
+            
+            <div class="profile-details">
+                <h2 id="profileName">Carlos Martínez</h2>
+                <div class="profile-username" id="profileUsername">@carlos_martinez</div>
+                <div class="profile-bio" id="profileBio">
+                    Desarrollador web | Apasionado por la tecnología | Amante del café ☕
+                </div>
+                <div class="profile-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span id="profileLocation">Madrid, España</span>
+                </div>
+                <div class="profile-join-date">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Se unió en enero 2024</span>
+                </div>
+            </div>
+            
+            <!-- Estadísticas -->
+            <div class="profile-stats">
+                <div class="stat-item" onclick="location.href='seguidores.html'">
+                    <div class="stat-number" id="followersCount">1,234</div>
+                    <div class="stat-label">Seguidores</div>
+                </div>
+                <div class="stat-item" onclick="location.href='siguiendo.html'">
+                    <div class="stat-number" id="followingCount">567</div>
+                    <div class="stat-label">Siguiendo</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="postsCount">42</div>
+                    <div class="stat-label">Publicaciones</div>
+                </div>
+            </div>
+            
+            <!-- Tabs de contenido -->
+            <div class="profile-tabs">
+                <button class="profile-tab active" data-tab="posts">Publicaciones</button>
+                <button class="profile-tab" data-tab="saved">Guardados</button>
+                <button class="profile-tab" data-tab="media">Multimedia</button>
+            </div>
+            
+            <!-- Grid de publicaciones -->
+            <div class="profile-posts-grid" id="profilePostsGrid">
+                <!-- Publicaciones del usuario -->
+            </div>
+        </main>
+        
+        <!-- Sidebar derecho -->
+        <aside class="right-sidebar">
+            <div class="suggestions">
+                <h3>Sugerencias para ti</h3>
+                <div class="suggestion-user">
+                    <img src="https://randomuser.me/api/portraits/women/3.jpg" alt="">
+                    <div>
+                        <div class="suggestion-name">Laura Gómez</div>
+                        <div class="suggestion-username">@laura_g</div>
+                    </div>
+                    <button class="follow-btn">Seguir</button>
+                </div>
+                <div class="suggestion-user">
+                    <img src="https://randomuser.me/api/portraits/men/4.jpg" alt="">
+                    <div>
+                        <div class="suggestion-name">Miguel Ángel</div>
+                        <div class="suggestion-username">@miguel_a</div>
+                    </div>
+                    <button class="follow-btn">Seguir</button>
+                </div>
+            </div>
+        </aside>
+    </div>
+    
+    <!-- Modal editar perfil -->
+    <div class="modal" id="editProfileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Editar perfil</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <label>Nombre</label>
+                <input type="text" id="editName" class="form-input">
+                <label>Biografía</label>
+                <textarea id="editBio" rows="3" class="form-input"></textarea>
+                <label>Ubicación</label>
+                <input type="text" id="editLocation" class="form-input">
+                <label>Estado personalizado</label>
+                <input type="text" id="editStatus" placeholder="¿Qué estás pensando?" class="form-input">
+                <div class="modal-actions">
+                    <button class="btn-secondary" id="cancelEditBtn">Cancelar</button>
+                    <button class="btn-primary" id="saveProfileBtn">Guardar cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
