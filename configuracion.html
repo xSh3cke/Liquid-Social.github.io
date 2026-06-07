@@ -1,1 +1,110 @@
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración - Liquid Social</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-droplet"></i>
+                <span>Liquid Social</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>Inicio</span></a>
+                <a href="perfil.html" class="nav-item"><i class="fas fa-user"></i><span>Perfil</span></a>
+                <a href="configuracion.html" class="nav-item active"><i class="fas fa-cog"></i><span>Configuración</span></a>
+            </nav>
+        </aside>
+        
+        <main class="settings-container">
+            <h2>Configuración</h2>
+            
+            <div class="settings-sections">
+                <div class="settings-sidebar">
+                    <button class="settings-nav active" data-section="account">Cuenta</button>
+                    <button class="settings-nav" data-section="privacy">Privacidad</button>
+                    <button class="settings-nav" data-section="notifications">Notificaciones</button>
+                    <button class="settings-nav" data-section="security">Seguridad</button>
+                    <button class="settings-nav" data-section="appearance">Apariencia</button>
+                </div>
+                
+                <div class="settings-content">
+                    <!-- Sección Cuenta -->
+                    <div class="settings-section active" id="accountSection">
+                        <h3>Información de la cuenta</h3>
+                        <div class="settings-form">
+                            <label>Nombre de usuario</label>
+                            <input type="text" value="carlos_martinez" class="form-input">
+                            <label>Correo electrónico</label>
+                            <input type="email" value="carlos@example.com" class="form-input">
+                            <label>Teléfono</label>
+                            <input type="tel" placeholder="+34 123 456 789" class="form-input">
+                            <button class="btn-primary">Guardar cambios</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Sección Privacidad -->
+                    <div class="settings-section" id="privacySection" style="display: none;">
+                        <h3>Privacidad y seguridad</h3>
+                        <div class="toggle-option">
+                            <span>Cuenta privada</span>
+                            <label class="switch"><input type="checkbox" id="privateAccount"><span class="slider"></span></label>
+                        </div>
+                        <div class="toggle-option">
+                            <span>Mostrar estado en línea</span>
+                            <label class="switch"><input type="checkbox" id="showOnlineStatus" checked><span class="slider"></span></label>
+                        </div>
+                        <div class="toggle-option">
+                            <span>Permitir mensajes de desconocidos</span>
+                            <label class="switch"><input type="checkbox" id="allowStrangerMessages"><span class="slider"></span></label>
+                        </div>
+                    </div>
+                    
+                    <!-- Sección Notificaciones -->
+                    <div class="settings-section" id="notificationsSection" style="display: none;">
+                        <h3>Preferencias de notificaciones</h3>
+                        <div class="toggle-option">
+                            <span>Notificaciones de likes</span>
+                            <label class="switch"><input type="checkbox" id="notifyLikes" checked><span class="slider"></span></label>
+                        </div>
+                        <div class="toggle-option">
+                            <span>Notificaciones de comentarios</span>
+                            <label class="switch"><input type="checkbox" id="notifyComments" checked><span class="slider"></span></label>
+                        </div>
+                        <div class="toggle-option">
+                            <span>Notificaciones de nuevos seguidores</span>
+                            <label class="switch"><input type="checkbox" id="notifyFollowers" checked><span class="slider"></span></label>
+                        </div>
+                        <div class="toggle-option">
+                            <span>Notificaciones de mensajes</span>
+                            <label class="switch"><input type="checkbox" id="notifyMessages" checked><span class="slider"></span></label>
+                        </div>
+                    </div>
+                    
+                    <!-- Sección Apariencia -->
+                    <div class="settings-section" id="appearanceSection" style="display: none;">
+                        <h3>Tema y apariencia</h3>
+                        <div class="theme-options">
+                            <button class="theme-btn" data-theme="light">☀️ Claro</button>
+                            <button class="theme-btn" data-theme="dark">🌙 Oscuro</button>
+                            <button class="theme-btn active" data-theme="system">💻 Sistema</button>
+                        </div>
+                        <div class="toggle-option">
+                            <span>Modo lectura</span>
+                            <label class="switch"><input type="checkbox" id="readingMode"><span class="slider"></span></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
