@@ -1,1 +1,92 @@
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Liquid Social</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo-large">
+                    <i class="fas fa-droplet"></i>
+                    <h1>Liquid Social</h1>
+                </div>
+                <p class="tagline">Conecta, comparte y conversa sin límites</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="loginEmail" placeholder="Correo electrónico" required>
+                </div>
+                
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="loginPassword" placeholder="Contraseña" required>
+                    <i class="fas fa-eye toggle-password" style="right: 15px; left: auto; cursor: pointer;"></i>
+                </div>
+                
+                <div class="form-options">
+                    <label class="checkbox">
+                        <input type="checkbox"> Recordarme
+                    </label>
+                    <a href="#" id="forgotPasswordLink">¿Olvidaste tu contraseña?</a>
+                </div>
+                
+                <button type="submit" class="btn-primary btn-block">Iniciar Sesión</button>
+                
+                <div class="divider">
+                    <span>o continúa con</span>
+                </div>
+                
+                <button type="button" class="btn-google" id="googleLoginBtn">
+                    <i class="fab fa-google"></i>
+                    Google
+                </button>
+            </form>
+            
+            <div class="auth-footer">
+                ¿No tienes una cuenta? <a href="register.html">Regístrate</a>
+            </div>
+        </div>
+        
+        <div class="auth-info">
+            <div class="info-content">
+                <i class="fas fa-comments"></i>
+                <h3>Mensajería en tiempo real</h3>
+                <p>Chatea con tus amigos al instante</p>
+                
+                <i class="fas fa-users"></i>
+                <h3>Comunidades activas</h3>
+                <p>Únete a grupos de tus intereses</p>
+                
+                <i class="fas fa-shield-alt"></i>
+                <h3>Privacidad y seguridad</h3>
+                <p>Tus datos están protegidos</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal recuperar contraseña -->
+    <div class="modal" id="forgotPasswordModal">
+        <div class="modal-content small">
+            <div class="modal-header">
+                <h3>Recuperar contraseña</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Te enviaremos un enlace para restablecer tu contraseña</p>
+                <input type="email" id="resetEmail" placeholder="Tu correo electrónico" class="form-input">
+                <button class="btn-primary" id="sendResetLinkBtn">Enviar enlace</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
