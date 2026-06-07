@@ -1,1 +1,136 @@
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorar - Liquid Social</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-droplet"></i>
+                <span>Liquid Social</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>Inicio</span></a>
+                <a href="explorar.html" class="nav-item active"><i class="fas fa-compass"></i><span>Explorar</span></a>
+                <a href="mensajes.html" class="nav-item"><i class="fas fa-envelope"></i><span>Mensajes</span></a>
+                <a href="grupos.html" class="nav-item"><i class="fas fa-users"></i><span>Grupos</span></a>
+                <a href="perfil.html" class="nav-item"><i class="fas fa-user"></i><span>Perfil</span></a>
+            </nav>
+        </aside>
+        
+        <main class="explore-container">
+            <div class="explore-header">
+                <h2>Explorar</h2>
+                <div class="explore-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Buscar usuarios, publicaciones o hashtags" id="exploreSearch">
+                </div>
+            </div>
+            
+            <!-- Categorías -->
+            <div class="explore-categories">
+                <button class="category-btn active" data-cat="all">Para ti</button>
+                <button class="category-btn" data-cat="trending">Tendencias</button>
+                <button class="category-btn" data-cat="recent">Recientes</button>
+                <button class="category-btn" data-cat="photos">Fotos</button>
+                <button class="category-btn" data-cat="videos">Videos</button>
+            </div>
+            
+            <!-- Grid de exploración -->
+            <div class="explore-grid" id="exploreGrid">
+                <div class="explore-item">
+                    <img src="https://picsum.photos/300/300?random=1" alt="">
+                    <div class="explore-overlay">
+                        <div><i class="fas fa-heart"></i> 1,234</div>
+                        <div><i class="fas fa-comment"></i> 456</div>
+                    </div>
+                </div>
+                <div class="explore-item">
+                    <img src="https://picsum.photos/300/300?random=2" alt="">
+                    <div class="explore-overlay">
+                        <div><i class="fas fa-heart"></i> 2,345</div>
+                        <div><i class="fas fa-comment"></i> 789</div>
+                    </div>
+                </div>
+                <div class="explore-item">
+                    <img src="https://picsum.photos/300/300?random=3" alt="">
+                    <div class="explore-overlay">
+                        <div><i class="fas fa-heart"></i> 987</div>
+                        <div><i class="fas fa-comment"></i> 234</div>
+                    </div>
+                </div>
+                <div class="explore-item">
+                    <img src="https://picsum.photos/300/300?random=4" alt="">
+                    <div class="explore-overlay">
+                        <div><i class="fas fa-heart"></i> 3,456</div>
+                        <div><i class="fas fa-comment"></i> 1,234</div>
+                    </div>
+                </div>
+                <div class="explore-item">
+                    <img src="https://picsum.photos/300/300?random=5" alt="">
+                    <div class="explore-overlay">
+                        <div><i class="fas fa-heart"></i> 567</div>
+                        <div><i class="fas fa-comment"></i> 123</div>
+                    </div>
+                </div>
+                <div class="explore-item">
+                    <img src="https://picsum.photos/300/300?random=6" alt="">
+                    <div class="explore-overlay">
+                        <div><i class="fas fa-heart"></i> 4,567</div>
+                        <div><i class="fas fa-comment"></i> 2,345</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Usuarios destacados -->
+            <div class="featured-users">
+                <h3>Usuarios destacados</h3>
+                <div class="featured-users-list">
+                    <div class="featured-user">
+                        <img src="https://randomuser.me/api/portraits/women/10.jpg" alt="">
+                        <div>
+                            <div class="featured-user-name">Sofía Ramírez</div>
+                            <div class="featured-user-username">@sofia_ram</div>
+                        </div>
+                        <button class="follow-sm-btn">Seguir</button>
+                    </div>
+                    <div class="featured-user">
+                        <img src="https://randomuser.me/api/portraits/men/11.jpg" alt="">
+                        <div>
+                            <div class="featured-user-name">Diego Torres</div>
+                            <div class="featured-user-username">@diego_t</div>
+                        </div>
+                        <button class="follow-sm-btn">Seguir</button>
+                    </div>
+                    <div class="featured-user">
+                        <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="">
+                        <div>
+                            <div class="featured-user-name">Valentina Díaz</div>
+                            <div class="featured-user-username">@vale_diaz</div>
+                        </div>
+                        <button class="follow-sm-btn">Seguir</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <aside class="right-sidebar">
+            <div class="trending-hashtags">
+                <h3>Hashtags en tendencia</h3>
+                <div class="hashtag-item">#LiquidSocial <span>2,345 posts</span></div>
+                <div class="hashtag-item">#Innovación <span>1,876 posts</span></div>
+                <div class="hashtag-item">#Tecnología <span>1,543 posts</span></div>
+                <div class="hashtag-item">#RedesSociales <span>987 posts</span></div>
+            </div>
+        </aside>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
