@@ -1,1 +1,103 @@
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - Liquid Social</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-droplet"></i>
+                <span>Liquid Social</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>Inicio</span></a>
+                <a href="admin.html" class="nav-item active"><i class="fas fa-shield-alt"></i><span>Admin Panel</span></a>
+            </nav>
+        </aside>
+        
+        <main class="admin-container">
+            <h2>Panel de Administración</h2>
+            
+            <!-- Estadísticas rápidas -->
+            <div class="admin-stats-grid">
+                <div class="admin-stat-card">
+                    <i class="fas fa-users"></i>
+                    <div class="stat-info">
+                        <div class="stat-number" id="totalUsers">12,345</div>
+                        <div class="stat-label">Usuarios totales</div>
+                    </div>
+                </div>
+                <div class="admin-stat-card">
+                    <i class="fas fa-newspaper"></i>
+                    <div class="stat-info">
+                        <div class="stat-number" id="totalPosts">45,678</div>
+                        <div class="stat-label">Publicaciones</div>
+                    </div>
+                </div>
+                <div class="admin-stat-card">
+                    <i class="fas fa-comments"></i>
+                    <div class="stat-info">
+                        <div class="stat-number" id="totalMessages">123,456</div>
+                        <div class="stat-label">Mensajes enviados</div>
+                    </div>
+                </div>
+                <div class="admin-stat-card">
+                    <i class="fas fa-chart-line"></i>
+                    <div class="stat-info">
+                        <div class="stat-number" id="activeUsers">2,345</div>
+                        <div class="stat-label">Usuarios activos hoy</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Gráfico -->
+            <div class="admin-chart">
+                <h3>Actividad de usuarios (últimos 7 días)</h3>
+                <canvas id="activityChart" height="100"></canvas>
+            </div>
+            
+            <!-- Tabs de gestión -->
+            <div class="admin-tabs">
+                <button class="admin-tab active" data-admin-tab="users">Gestión de Usuarios</button>
+                <button class="admin-tab" data-admin-tab="reports">Reportes</button>
+                <button class="admin-tab" data-admin-tab="moderation">Moderación</button>
+                <button class="admin-tab" data-admin-tab="settings">Configuración</button>
+            </div>
+            
+            <!-- Tabla de usuarios -->
+            <div class="admin-table-container" id="usersTable">
+                <table class="admin-table">
+                    <thead>
+                        <tr><th>Usuario</th><th>Email</th><th>Rol</th><th>Estado</th><th>Acciones</th></tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <tr><td><img src="https://randomuser.me/api/portraits/men/1.jpg" class="table-avatar"> @carlos_m</td><td>carlos@email.com</td><td><select class="role-select"><option>usuario</option><option>moderador</option><option>admin</option></select></td><td><span class="status-badge active">Activo</span></td><td><button class="action-btn-icon"><i class="fas fa-ban"></i></button> <button class="action-btn-icon"><i class="fas fa-trash"></i></button></td></tr>
+                        <tr><td><img src="https://randomuser.me/api/portraits/women/2.jpg" class="table-avatar"> @ana_g</td><td>ana@email.com</td><td><select class="role-select"><option>usuario</option><option>moderador</option><option>admin</option></select></td><td><span class="status-badge active">Activo</span></td><td><button class="action-btn-icon"><i class="fas fa-ban"></i></button> <button class="action-btn-icon"><i class="fas fa-trash"></i></button></td></tr>
+                        <tr><td><img src="https://randomuser.me/api/portraits/men/3.jpg" class="table-avatar"> @carlos_r</td><td>carlosr@email.com</td><td><select class="role-select"><option>usuario</option><option>moderador</option><option>admin</option></select></td><td><span class="status-badge suspended">Suspendido</span></td><td><button class="action-btn-icon"><i class="fas fa-ban"></i></button> <button class="action-btn-icon"><i class="fas fa-trash"></i></button></td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Reportes (oculto por defecto) -->
+            <div class="admin-table-container" id="reportsTable" style="display: none;">
+                <table class="admin-table">
+                    <thead><tr><th>Reportado por</th><th>Contenido</th><th>Motivo</th><th>Fecha</th><th>Acciones</th></tr></thead>
+                    <tbody>
+                        <tr><td>@usuario1</td><td>Publicación ofensiva</td><td>Discurso de odio</td><td>2024-01-15</td><td><button class="action-btn-icon"><i class="fas fa-check"></i></button> <button class="action-btn-icon"><i class="fas fa-times"></i></button></td></tr>
+                        <tr><td>@usuario2</td><td>Comentario spam</td><td>Spam</td><td>2024-01-14</td><td><button class="action-btn-icon"><i class="fas fa-check"></i></button> <button class="action-btn-icon"><i class="fas fa-times"></i></button></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
