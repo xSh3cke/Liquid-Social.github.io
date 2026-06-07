@@ -1,1 +1,150 @@
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grupos - Liquid Social</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fas fa-droplet"></i>
+                <span>Liquid Social</span>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-item"><i class="fas fa-home"></i><span>Inicio</span></a>
+                <a href="explorar.html" class="nav-item"><i class="fas fa-compass"></i><span>Explorar</span></a>
+                <a href="mensajes.html" class="nav-item"><i class="fas fa-envelope"></i><span>Mensajes</span></a>
+                <a href="grupos.html" class="nav-item active"><i class="fas fa-users"></i><span>Grupos</span></a>
+                <a href="perfil.html" class="nav-item"><i class="fas fa-user"></i><span>Perfil</span></a>
+            </nav>
+        </aside>
+        
+        <main class="groups-container">
+            <div class="groups-header">
+                <h2>Grupos</h2>
+                <button class="btn-primary" id="createGroupBtn"><i class="fas fa-plus"></i> Crear grupo</button>
+            </div>
+            
+            <div class="groups-tabs">
+                <button class="groups-tab active" data-filter="all">Todos</button>
+                <button class="groups-tab" data-filter="member">Mis grupos</button>
+                <button class="groups-tab" data-filter="admin">Administro</button>
+            </div>
+            
+            <div class="groups-grid" id="groupsGrid">
+                <!-- Grupos cargados dinámicamente -->
+                <div class="group-card">
+                    <div class="group-cover">
+                        <img src="https://picsum.photos/400/200?random=1" alt="">
+                        <div class="group-members">1,234 miembros</div>
+                    </div>
+                    <div class="group-info">
+                        <img src="https://picsum.photos/60/60?random=1" alt="" class="group-avatar">
+                        <div class="group-details">
+                            <h3>Desarrolladores Web</h3>
+                            <p>Comunidad para developers apasionados</p>
+                            <div class="group-tags">
+                                <span>#tecnología</span>
+                                <span>#programación</span>
+                            </div>
+                        </div>
+                        <button class="join-group-btn">Unirse</button>
+                    </div>
+                </div>
+                
+                <div class="group-card">
+                    <div class="group-cover">
+                        <img src="https://picsum.photos/400/200?random=2" alt="">
+                        <div class="group-members">856 miembros</div>
+                    </div>
+                    <div class="group-info">
+                        <img src="https://picsum.photos/60/60?random=2" alt="" class="group-avatar">
+                        <div class="group-details">
+                            <h3>Amantes del Café</h3>
+                            <p>Para quienes disfrutan una buena taza ☕</p>
+                            <div class="group-tags">
+                                <span>#café</span>
+                                <span>#estilodevida</span>
+                            </div>
+                        </div>
+                        <button class="join-group-btn joined">Unido</button>
+                    </div>
+                </div>
+                
+                <div class="group-card">
+                    <div class="group-cover">
+                        <img src="https://picsum.photos/400/200?random=3" alt="">
+                        <div class="group-members">2,345 miembros</div>
+                    </div>
+                    <div class="group-info">
+                        <img src="https://picsum.photos/60/60?random=3" alt="" class="group-avatar">
+                        <div class="group-details">
+                            <h3>Fotografía Creativa</h3>
+                            <p>Comparte tus mejores capturas 📸</p>
+                            <div class="group-tags">
+                                <span>#fotografía</span>
+                                <span>#arte</span>
+                            </div>
+                        </div>
+                        <button class="join-group-btn">Unirse</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <aside class="right-sidebar">
+            <div class="suggested-groups">
+                <h3>Grupos recomendados</h3>
+                <div class="suggested-group">
+                    <img src="https://picsum.photos/40/40?random=4" alt="">
+                    <div>
+                        <div class="suggested-group-name">Música Indie</div>
+                        <div class="suggested-group-members">567 miembros</div>
+                    </div>
+                    <button class="follow-btn">Unirse</button>
+                </div>
+                <div class="suggested-group">
+                    <img src="https://picsum.photos/40/40?random=5" alt="">
+                    <div>
+                        <div class="suggested-group-name">Viajeros del Mundo</div>
+                        <div class="suggested-group-members">3,456 miembros</div>
+                    </div>
+                    <button class="follow-btn">Unirse</button>
+                </div>
+            </div>
+        </aside>
+    </div>
+    
+    <!-- Modal crear grupo -->
+    <div class="modal" id="createGroupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Crear nuevo grupo</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <label>Nombre del grupo</label>
+                <input type="text" id="groupName" class="form-input" placeholder="Ej: Amantes del café">
+                <label>Descripción</label>
+                <textarea id="groupDescription" rows="3" class="form-input" placeholder="Describe de qué trata el grupo..."></textarea>
+                <label>¿Grupo privado?</label>
+                <div class="toggle-switch">
+                    <input type="checkbox" id="groupPrivate">
+                    <label for="groupPrivate">Solo miembros invitados pueden ver el contenido</label>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-secondary" id="cancelGroupBtn">Cancelar</button>
+                    <button class="btn-primary" id="saveGroupBtn">Crear grupo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
